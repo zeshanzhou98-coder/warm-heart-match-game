@@ -2,916 +2,729 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>米粒大王的工作台 · 管理后台</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>米粒大王的工作台 - 管理后台</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
-:root{--pink:#ff85a2;--pink2:#ffb3c6;--pink-light:#fff0f3;--pink-dark:#e84d7a;--mint:#a8e6cf;--mint-light:#e8fbf3;--mint-dark:#56c596;--lavender:#c3aed6;--lav-light:#f3eef9;--peach:#ffd3b6;--peach-light:#fff7f0;--sky:#b5d8ff;--sky-light:#ecf5ff;--text:#4a3728;--text2:#8b7355;--text3:#b8a088;--card:rgba(255,255,255,0.97);--shadow:0 4px 16px rgba(255,133,162,0.12);--shadow-lg:0 8px 32px rgba(255,133,162,0.16);--radius:16px;--radius-sm:10px;--bd:2px solid rgba(255,133,162,0.18);--sidebar-w:220px;--font-cute:'ZCOOL KuaiLe','PingFang SC',sans-serif}
+:root{--pink:#ff85a2;--pink2:#ffb3c6;--pink-light:#fff0f3;--pink-dark:#e84d7a;--mint:#a8e6cf;--mint-dark:#56c596;--text:#4a3728;--text2:#8b7355;--text3:#b8a088;--card:rgba(255,255,255,0.95);--shadow:0 4px 16px rgba(255,133,162,0.12);--radius:16px;--bd:2px solid rgba(255,133,162,0.18)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;color:var(--text);background:#fff5f7;min-height:100vh}
-/* SIDEBAR */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:linear-gradient(180deg,#fffef9,#fff5f7);border-right:var(--bd);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
-.sidebar-logo{padding:20px 16px 16px;text-align:center;border-bottom:2px solid rgba(255,133,162,0.12)}
-.sidebar-logo h2{font-family:var(--font-cute);color:var(--pink-dark);font-size:18px;letter-spacing:1px}
-.sidebar-logo small{color:var(--text3);font-size:11px}
-.nav-list{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all .15s;color:var(--text2);font-weight:600;font-size:13px;border:1.5px solid transparent}
-.nav-item:hover{background:var(--pink-light);color:var(--pink-dark);border-color:rgba(255,179,198,0.3)}
-.nav-item.active{background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;box-shadow:0 4px 14px rgba(255,133,162,0.4)}
-.nav-icon{font-size:16px;width:24px;text-align:center}
-.sidebar-footer{padding:12px;text-align:center;font-size:10px;color:var(--pink2);border-top:2px solid rgba(255,133,162,0.12)}
-/* MAIN */
-.main{margin-left:var(--sidebar-w);min-height:100vh}
-.topbar{position:sticky;top:0;z-index:50;background:rgba(255,245,247,0.92);backdrop-filter:blur(12px);border-bottom:var(--bd);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.topbar-title{font-family:var(--font-cute);font-size:20px;color:var(--pink-dark);letter-spacing:1px}
-.topbar-actions{display:flex;gap:8px;align-items:center}
-.content{padding:24px;max-width:1000px}
-/* BUTTONS */
-.btn{border:none;border-radius:20px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:4px;font-family:inherit;letter-spacing:.5px;white-space:nowrap}
-.btn:active{transform:scale(0.95)}
-.btn-primary{background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;box-shadow:0 4px 12px rgba(255,133,162,0.3)}
-.btn-primary:hover{box-shadow:0 6px 18px rgba(255,133,162,0.4)}
-.btn-secondary{background:var(--pink-light);color:var(--pink-dark);border:1.5px solid rgba(255,179,198,0.4)}
-.btn-secondary:hover{background:#ffe4ee}
-.btn-danger{background:#fff0f0;color:#d14545;border:1.5px solid #fcc}
-.btn-sm{padding:5px 10px;font-size:11px;border-radius:14px}
-.btn-mint{background:var(--mint-light);color:var(--mint-dark);border:1.5px solid var(--mint)}
-/* FORMS */
-.input,.select,textarea{width:100%;border:1.5px solid rgba(0,0,0,0.08);border-radius:8px;padding:8px 12px;font-size:13px;background:#fff;outline:none;transition:all .15s;font-family:inherit;color:var(--text)}
-.input:focus,.select:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,133,162,0.08)}
-textarea{resize:vertical;min-height:60px}
-label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:4px;display:block}
-.form-group{margin-bottom:12px}
-.form-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
-.form-row .form-group{flex:1;min-width:120px}
-/* CARDS */
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#fff5f7;color:var(--text);min-height:100vh}
+.app{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{width:220px;background:linear-gradient(180deg,#fffef9,#fff0f5);border-right:var(--bd);padding:20px 12px;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;z-index:100}
+.logo{text-align:center;padding:16px 0;border-bottom:var(--bd);margin-bottom:12px}
+.logo h1{font-size:18px;color:var(--pink-dark);font-weight:800}
+.logo p{font-size:11px;color:var(--text3);margin-top:4px}
+.nav{flex:1;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:600;color:var(--text2);margin-bottom:4px}
+.nav-item:hover{background:var(--pink-light);color:var(--pink-dark)}
+.nav-item.active{background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;box-shadow:0 4px 14px rgba(255,133,162,0.35)}
+.sidebar-footer{text-align:center;font-size:10px;color:var(--text3);padding:12px 0;border-top:var(--bd)}
+
+/* Main */
+.main{flex:1;margin-left:220px;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border-bottom:var(--bd);padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.topbar h2{font-size:16px;font-weight:700;color:var(--pink-dark)}
+.content{padding:24px}
+.page{display:none;animation:fadeIn .3s}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;border:var(--bd);margin-bottom:16px}
-.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
-.card-title{font-size:15px;font-weight:700;font-family:var(--font-cute);letter-spacing:1px;color:var(--pink-dark);display:flex;align-items:center;gap:6px}
-/* TABLE */
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12px}
-th,td{padding:8px 10px;text-align:left;border-bottom:1.5px solid rgba(255,179,198,0.15);vertical-align:middle}
-th{font-weight:700;color:var(--pink-dark);font-size:11px;background:rgba(255,248,245,0.5);position:sticky;top:0}
-tr:hover{background:rgba(255,240,243,0.3)}
-/* TAGS */
-.tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:12px;background:var(--pink-light);color:var(--pink-dark);font-weight:700}
-.tag-green{background:var(--mint-light);color:var(--mint-dark)}
-.tag-blue{background:var(--sky-light);color:#2b7cd3}
-/* TOAST */
-.toast-container{position:fixed;top:20px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:8px}
-.toast{padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;box-shadow:var(--shadow-lg);animation:slideIn .3s ease;max-width:300px}
-.toast-success{background:var(--mint-light);color:var(--mint-dark);border:1.5px solid var(--mint)}
-.toast-error{background:#fff0f0;color:#d14545;border:1.5px solid #fcc}
-.toast-info{background:var(--sky-light);color:#2b7cd3;border:1.5px solid var(--sky)}
-@keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:200;display:none;align-items:center;justify-content:center}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.card-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:6px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--card);border-radius:14px;padding:16px;text-align:center;border:var(--bd)}
+.stat .icon{font-size:28px;margin-bottom:6px}
+.stat .value{font-size:24px;font-weight:800;color:var(--pink-dark)}
+.stat .label{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* Table */
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:left;border-bottom:1.5px solid rgba(255,133,162,0.1);font-size:13px}
+th{color:var(--text3);font-weight:600;font-size:11px;text-transform:uppercase}
+tr:hover td{background:var(--pink-light)}
+
+/* Buttons */
+.btn{border:none;border-radius:16px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.btn:active{transform:scale(0.95)}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--pink-dark));color:#fff;box-shadow:0 3px 10px rgba(255,133,162,0.3)}
+.btn-secondary{background:var(--pink-light);color:var(--pink-dark);border:1.5px solid rgba(255,179,198,0.4)}
+.btn-success{background:linear-gradient(135deg,var(--mint),var(--mint-dark));color:#fff}
+.btn-danger{background:#fff0f0;color:#d14545;border:1.5px solid #fcc}
+.btn-sm{padding:5px 10px;font-size:11px;border-radius:12px}
+.btn-lg{padding:12px 24px;font-size:14px}
+.btn-block{width:100%;justify-content:center}
+
+/* Forms */
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:600;margin-bottom:5px;color:var(--text2)}
+.input,.select,textarea{width:100%;border:1.5px solid rgba(0,0,0,0.08);border-radius:10px;padding:9px 12px;font-size:13px;background:#fff;outline:none;transition:all .2s;font-family:inherit}
+.input:focus,.select:focus,textarea:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,133,162,0.08)}
+textarea{min-height:80px;resize:vertical}
+
+/* Tags */
+.tag{display:inline-block;font-size:10px;padding:3px 8px;border-radius:12px;background:var(--pink-light);color:var(--pink-dark);font-weight:600}
+.tag-green{background:#e8fbf3;color:var(--mint-dark)}
+.tag-blue{background:#ecf5ff;color:#2b7cd3}
+.tag-orange{background:#fff7f0;color:#d97706}
+
+/* Todo */
+.todo-item{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1.5px solid rgba(255,133,162,0.08)}
+.todo-check{width:18px;height:18px;accent-color:var(--pink);cursor:pointer}
+.todo-text{flex:1;font-size:13px}
+.todo-text.done{text-decoration:line-through;color:var(--text3)}
+
+/* Account card */
+.acc-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(255,248,245,0.7);border:1.5px solid transparent;margin-bottom:8px;transition:all .15s}
+.acc-card:hover{background:#fff;border-color:rgba(255,179,198,0.3)}
+.acc-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-size:20px;background:var(--pink-light)}
+.acc-info{flex:1}
+.acc-name{font-weight:700;font-size:13px}
+.acc-meta{font-size:11px;color:var(--text3)}
+
+/* Progress */
+.progress{height:6px;background:#f0e8ec;border-radius:10px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--pink2),var(--pink));border-radius:10px}
+
+/* Sync */
+.sync-box{background:linear-gradient(135deg,#fffef9,#fff5f7);border:2px solid rgba(255,179,198,0.3);border-radius:var(--radius);padding:24px;text-align:center;max-width:560px;margin:0 auto}
+.sync-box h3{font-size:20px;color:var(--pink-dark);margin-bottom:8px}
+.sync-box p{color:var(--text3);font-size:13px;margin-bottom:16px}
+.sync-input{display:flex;gap:8px;margin-bottom:12px}
+.sync-input input{flex:1}
+.sync-actions{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.sync-status{margin-top:12px;font-size:12px;min-height:20px}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);display:none;align-items:center;justify-content:center;z-index:200}
 .modal-overlay.show{display:flex}
-.modal{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:24px;width:min(500px,90vw);max-height:80vh;overflow-y:auto;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
-.modal-title{font-family:var(--font-cute);font-size:18px;color:var(--pink-dark);margin-bottom:16px}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
-/* SECTION */
-.section{display:none}
-.section.active{display:block}
-.section-title{font-family:var(--font-cute);font-size:22px;color:var(--pink-dark);margin-bottom:16px;letter-spacing:1px}
-/* SYNC STATUS */
-.sync-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px}
-.sync-ok{background:var(--mint-light);color:var(--mint-dark)}
-.sync-err{background:#fff0f0;color:#d14545}
-.sync-syncing{background:var(--sky-light);color:#2b7cd3}
-/* EMPTY */
-.empty{text-align:center;color:var(--text3);font-size:12px;padding:20px}
-/* SETTINGS */
-.settings-card{background:linear-gradient(135deg,var(--lav-light),#fff);border-color:rgba(195,174,214,0.4)}
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
-.stat-box{background:var(--card);border-radius:var(--radius-sm);padding:12px;text-align:center;border:var(--bd)}
-.stat-num{font-size:24px;font-weight:800;font-family:var(--font-cute);color:var(--pink-dark)}
-.stat-label{font-size:10px;color:var(--text3);margin-top:2px}
-@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.content{padding:12px}}
+.modal{background:#fff;border-radius:var(--radius);padding:24px;width:90%;max-width:460px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.15)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.modal-title{font-size:16px;font-weight:700;color:var(--pink-dark)}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text3)}
+
+/* Toast */
+.toast-box{position:fixed;top:16px;right:16px;z-index:300}
+.toast{background:#fff;border-radius:12px;padding:12px 16px;margin-bottom:8px;box-shadow:0 4px 20px rgba(0,0,0,0.12);display:flex;align-items:center;gap:8px;font-size:13px;animation:slideIn .3s;border-left:3px solid var(--pink)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast-success{border-left-color:var(--mint-dark)}
+.toast-error{border-left-color:#d14545}
+
+/* Grid */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+
+/* Toggle */
+.toggle{position:relative;width:40px;height:22px;cursor:pointer;display:inline-block}
+.toggle input{display:none}
+.toggle .slider{position:absolute;inset:0;background:#ddd;border-radius:11px;transition:.3s}
+.toggle .slider:before{content:'';position:absolute;width:18px;height:18px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.slider{background:var(--pink)}
+.toggle input:checked+.slider:before{transform:translateX(18px)}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .stats{grid-template-columns:1fr 1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div class="sidebar">
-  <div class="sidebar-logo"><h2>🌸 管理后台</h2><small>米粒大王的工作台</small></div>
-  <nav class="nav-list" id="navList">
-    <div class="nav-item active" data-section="dashboard"><span class="nav-icon">📊</span>总览</div>
-    <div class="nav-item" data-section="accounts"><span class="nav-icon">📱</span>账号管理</div>
-    <div class="nav-item" data-section="tasks"><span class="nav-icon">📝</span>任务管理</div>
-    <div class="nav-item" data-section="reading"><span class="nav-icon">📖</span>阅读管理</div>
-    <div class="nav-item" data-section="english"><span class="nav-icon">🇬🇧</span>英语管理</div>
-    <div class="nav-item" data-section="hits"><span class="nav-icon">🔥</span>热点管理</div>
-    <div class="nav-item" data-section="exercise"><span class="nav-icon">💪</span>锻炼管理</div>
-    <div class="nav-item" data-section="wallet"><span class="nav-icon">💰</span>记账管理</div>
-    <div class="nav-item" data-section="habits"><span class="nav-icon">🌱</span>习惯管理</div>
-    <div class="nav-item" data-section="profile"><span class="nav-icon">👤</span>个人资料</div>
-    <div class="nav-item" data-section="data"><span class="nav-icon">📦</span>数据管理</div>
-    <div class="nav-item" data-section="settings"><span class="nav-icon">⚙️</span>同步设置</div>
-  </nav>
-  <div class="sidebar-footer">♡ Powered by GitHub API</div>
-</div>
-
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="topTitle">📊 总览</div>
-    <div class="topbar-actions">
-      <span class="sync-badge sync-ok" id="syncBadge">✅ 已连接</span>
-      <button class="btn btn-secondary" onclick="pullFromGitHub()" id="pullBtn">⬇️ 拉取</button>
-      <button class="btn btn-primary" onclick="pushToGitHub()" id="pushBtn">⬆️ 推送</button>
-      <a class="btn btn-secondary" href="index.html" target="_blank">🖥 打开工作台</a>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo"><h1>🎀 米粒大王</h1><p>工作台管理后台</p></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidebar-footer">♡ 管理后台 v1.0 ♡</div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <h2 id="pageTitle">📊 工作台</h2>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="syncIndicator" style="font-size:12px;color:var(--text3)">⚪ 未同步</span>
+        <button class="btn btn-success btn-sm" onclick="syncToGithub()">⬆️ 同步到GitHub</button>
+        <button class="btn btn-secondary btn-sm" onclick="syncFromGithub()">⬇️ 从GitHub拉取</button>
+      </div>
     </div>
+    <div class="content" id="content"></div>
   </div>
-  <div class="content" id="content"></div>
 </div>
 
-<div class="toast-container" id="toasts"></div>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modal"></div>
+<div class="toast-box" id="toastBox"></div>
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle"></span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
 </div>
 
 <script>
-'use strict';
-// ═══════════════════════════════════════
-// CONFIG & STATE
-// ═══════════════════════════════════════
-var CONFIG_KEY='mili_admin_config';
-var DATA_KEY='mb_v6';
-var cfg=loadConfig();
-var state=null;
-var fileSha=null;
+const STORAGE = 'mb_v6';
+const GITHUB_TOKEN_KEY = 'admin_github_token';
+const GITHUB_REPO_KEY = 'admin_github_repo';
 
-function loadConfig(){
-  try{var c=localStorage.getItem(CONFIG_KEY);if(c)return JSON.parse(c);}catch(e){}
-  return {token:'',owner:'zeshanzhou98-coder',repo:'warm-heart-match-game',path:'data.json'};
-}
-function saveConfig(){localStorage.setItem(CONFIG_KEY,JSON.stringify(cfg));}
+// 从原工作台加载数据
+let state = loadState();
+let githubToken = localStorage.getItem(GITHUB_TOKEN_KEY) || '';
+let githubRepo = localStorage.getItem(GITHUB_REPO_KEY) || 'zeshanzhou98-coder/warm-heart-match-game';
 
-// ═══════════════════════════════════════
-// GITHUB API
-// ═══════════════════════════════════════
-function apiUrl(path){return 'https://api.github.com/repos/'+cfg.owner+'/'+cfg.repo+'/'+path;}
-function authHeaders(){
-  var h={'Accept':'application/vnd.github.v3+json'};
-  if(cfg.token)h['Authorization']='token '+cfg.token;
-  return h;
+function loadState() {
+  try {
+    const s = localStorage.getItem(STORAGE);
+    if (s) { const p = JSON.parse(s); if (p && typeof p === 'object') return ensureDefaults(p); }
+  } catch (e) {}
+  return getDefaultState();
 }
 
-async function githubRead(){
-  if(!cfg.token||!cfg.owner||!cfg.repo)throw new Error('请先配置同步设置');
-  var url=apiUrl('contents/'+cfg.path);
-  var r=await fetch(url,{headers:authHeaders()});
-  if(r.status===404)return{data:null,sha:null};
-  if(!r.ok)throw new Error('读取失败: '+r.status+' '+(await r.text()));
-  var j=await r.json();
-  fileSha=j.sha;
-  var content=atob(j.content);
-  return{data:JSON.parse(content),sha:j.sha};
+function saveState() {
+  try { localStorage.setItem(STORAGE, JSON.stringify(state)); } catch (e) {}
 }
 
-async function githubWrite(data,message){
-  if(!cfg.token)throw new Error('请先配置同步设置');
-  var url=apiUrl('contents/'+cfg.path);
-  var body={message:message||'update data',content:btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))))};
-  if(fileSha)body.sha=fileSha;
-  var r=await fetch(url,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},authHeaders()),body:JSON.stringify(body)});
-  if(!r.ok){
-    var err=await r.json();
-    if(err.message&&err.message.indexOf('sha')>=0){
-      toast('冲突：文件已被修改，请先拉取最新数据','error');
-      throw new Error('SHA conflict');
-    }
-    throw new Error('写入失败: '+r.status);
-  }
-  var j=await r.json();
-  fileSha=j.content.sha;
-  return j;
-}
-
-// ═══════════════════════════════════════
-// STATE MANAGEMENT
-// ═══════════════════════════════════════
-function defaultState(){
-  return{
-    profile:{name:'米粒大王',avatar:null},
-    accounts:[
-      {id:'a1',platform:'抖音',name:'米粒大王的日常',followers:1280,active:true,growth:{day:12,week:86,month:340,target:5000}},
-      {id:'a2',platform:'小红书',name:'米粒穿搭日记',followers:3520,active:false,growth:{day:45,week:280,month:1200,target:10000}},
-      {id:'a3',platform:'B站',name:'米粒的剪辑间',followers:860,active:false,growth:{day:3,week:22,month:90,target:2000}}
+function getDefaultState() {
+  return {
+    profile: { name: '米粒大王', avatar: null },
+    accounts: [
+      { id: 'a1', platform: '抖音', name: '米粒大王的日常', followers: 1280, active: true, growth: { day: 12, week: 86, month: 340, target: 5000 } },
+      { id: 'a2', platform: '小红书', name: '米粒穿搭日记', followers: 3520, active: false, growth: { day: 45, week: 280, month: 1200, target: 10000 } },
+      { id: 'a3', platform: 'B站', name: '米粒的剪辑间', followers: 860, active: false, growth: { day: 3, week: 22, month: 90, target: 2000 } }
     ],
-    tasks:[
-      {id:'t1',text:'发布一条穿搭短视频',completed:false,date:'2026-08-02'},
-      {id:'t2',text:'英语单词+对话30min',completed:true,date:'2026-08-02'},
-      {id:'t3',text:'肩颈拉伸8分钟',completed:false,date:'2026-08-02'}
+    tasks: [
+      { id: 't1', text: '发布一条穿搭短视频', completed: false, date: '2026-08-03' },
+      { id: 't2', text: '英语单词+对话30min', completed: true, date: '2026-08-03' },
+      { id: 't3', text: '肩颈拉伸8分钟', completed: false, date: '2026-08-03' }
     ],
-    pinnedTasks:[
-      {id:'p1',text:'需找博主合作',completed:false},
-      {id:'p2',text:'拆解一篇小红书/抖音爆款作品',completed:false},
-      {id:'p3',text:'更新拼豆账号',completed:false}
+    pinnedTasks: [
+      { id: 'p1', text: '需找博主合作', completed: false },
+      { id: 'p2', text: '拆解一篇爆款作品', completed: false },
+      { id: 'p3', text: '更新拼豆账号', completed: false }
     ],
-    reading:{reading:[],want:[],finished:[],recommend:[]},
-    english:{words:[],dialogues:[]},
-    hits:[],
-    exercises:[],
-    exerciseLog:{},
-    exerciseStats:{},
-    readingStats:{},
-    inspirations:[],
-    habits:{},
-    editing:{activeTab:'video',planProgress:{},planNotes:{},todayLearned:'',summary:''},
-    wallet:{transactions:[]},
-    review:{pending:[],done:[]},
-    tools:{currentBg:'assets/bg.jpg',custom:[],musicId:'',doll:''},
-    comm:{progress:{},notes:'',activeTab:'daily',workProgress:{},workNotes:''},
-    moods:{},
-    sumikko:{clothes:[]}
+    reading: {
+      reading: [{ id: 'r1', title: '原子习惯', author: 'James Clear', page: 86, totalPage: 288, added: '2026-07-20' }],
+      want: [{ id: 'r2', title: '纳瓦尔宝典', author: 'Eric Jorgenson', page: 0, totalPage: 256, added: '2026-07-28' }],
+      finished: [{ id: 'r3', title: '小狗钱钱', author: 'Bodo Schäfer', page: 208, totalPage: 208, added: '2026-06-15' }],
+      recommend: [
+        { title: '认知觉醒', author: '周岭', reason: '自媒体人必读' },
+        { title: '影响力', author: 'Robert Cialdini', reason: '爆款内容的底层逻辑' },
+        { title: '文案创作完全手册', author: 'Robert Bly', reason: '写出让人停不下来的标题' }
+      ]
+    },
+    english: {
+      words: [
+        { id: 'w1', word: 'alter', meaning: '改变，改动', status: 'new' },
+        { id: 'w2', word: 'burst', meaning: '突然发生，爆裂', status: 'new' },
+        { id: 'w3', word: 'budget', meaning: '预算；做安排', status: 'review' },
+        { id: 'w4', word: 'transform', meaning: '转变，变革', status: 'review' },
+        { id: 'w5', word: 'tender', meaning: '温柔的；脆弱的', status: 'mastered' }
+      ],
+      dialogues: [
+        { id: 'd1', title: '餐厅点餐', en: "A: May I take your order?\nB: Yes, I'd like a salad.", cn: '餐厅点餐场景' }
+      ]
+    },
+    hits: [
+      { title: '#2026秋日阔腿裤穿搭', heat: '12.7亿', tag: '穿搭', link: '' },
+      { title: '#朱珠米兰街拍', heat: '12亿', tag: '穿搭', link: '' },
+      { title: '#AI森系清透照', heat: '6800万', tag: 'AI', link: '' }
+    ],
+    exercises: [
+      { title: '8min瘦双下巴拉伸', bvid: 'BV1Pa411f7PQ', dur: '08:17', up: 'HHOPEONE', done: false },
+      { title: '瘦手臂+瘦背', bvid: 'BV1G9hHzyEPq', dur: '16:29', up: 'MIZI', done: false }
+    ],
+    wallet: {
+      transactions: [
+        { id: 'wx1', type: 'expense', amount: 35, category: '餐饮', method: '微信', note: '午餐', date: '2026-08-03' },
+        { id: 'wx2', type: 'expense', amount: 8, category: '交通', method: '支付宝', note: '地铁', date: '2026-08-03' },
+        { id: 'wx3', type: 'income', amount: 3000, category: '副业', method: '银行卡', note: '广告收入', date: '2026-08-01' }
+      ]
+    },
+    review: {
+      pending: [{ id: 'v1', title: '本周短视频数据复盘', date: '2026-08-03' }],
+      done: []
+    },
+    editing: { activeTab: 'video', planProgress: {}, planNotes: {}, todayLearned: '', summary: '' },
+    tools: { currentBg: 'assets/bg.jpg', custom: [], musicId: '', doll: '' },
+    moods: {},
+    sumikko: { clothes: [] },
+    exerciseLog: {},
+    exerciseStats: {},
+    readingStats: {},
+    inspirations: [],
+    habits: {},
+    comm: { progress: {}, notes: '', activeTab: 'daily', workProgress: {}, workNotes: '' }
   };
 }
 
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
-function esc(s){if(s==null)return'';return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function fmtNum(n){var num=Number(n)||0;if(num>=10000)return(num/10000).toFixed(1)+'万';return String(num).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
-function fmtMoney(n){return(Number(n)||0).toFixed(2);}
-
-// ═══════════════════════════════════════
-// SYNC
-// ═══════════════════════════════════════
-async function pullFromGitHub(){
-  var badge=document.getElementById('syncBadge');
-  badge.className='sync-badge sync-syncing';badge.textContent='⏳ 拉取中...';
-  try{
-    var result=await githubRead();
-    if(result.data){
-      state=result.data;
-      localStorage.setItem(DATA_KEY,JSON.stringify(state));
-      toast('✅ 已从云端拉取最新数据','success');
-      renderCurrentSection();
-    }else{
-      toast('云端暂无数据，将推送当前数据','info');
-    }
-  }catch(e){
-    badge.className='sync-badge sync-err';badge.textContent='❌ 连接失败';
-    toast('拉取失败: '+e.message,'error');
-    return;
-  }
-  badge.className='sync-badge sync-ok';badge.textContent='✅ 已连接';
+function ensureDefaults(p) {
+  if (!p.moods) p.moods = {};
+  if (!p.wallet) p.wallet = { transactions: [] };
+  if (!p.profile) p.profile = { name: '米粒大王', avatar: null };
+  if (!p.sumikko) p.sumikko = { clothes: [] };
+  if (!p.pinnedTasks) p.pinnedTasks = getDefaultState().pinnedTasks;
+  if (!p.exerciseLog) p.exerciseLog = {};
+  if (!p.exerciseStats) p.exerciseStats = {};
+  if (!p.readingStats) p.readingStats = {};
+  if (!p.inspirations) p.inspirations = [];
+  if (!p.habits) p.habits = {};
+  if (!p.comm) p.comm = { progress: {}, notes: '', activeTab: 'daily', workProgress: {}, workNotes: '' };
+  if (!p.editing) p.editing = { activeTab: 'video', planProgress: {}, planNotes: {}, todayLearned: '', summary: '' };
+  if (!p.tools) p.tools = { currentBg: 'assets/bg.jpg', custom: [], musicId: '', doll: '' };
+  return p;
 }
 
-async function pushToGitHub(){
-  if(!state){toast('没有数据可推送','error');return;}
-  var badge=document.getElementById('syncBadge');
-  badge.className='sync-badge sync-syncing';badge.textContent='⏳ 推送中...';
-  try{
-    await githubWrite(state,'admin: update workspace data');
-    localStorage.setItem(DATA_KEY,JSON.stringify(state));
-    toast('✅ 已推送到云端','success');
-  }catch(e){
-    badge.className='sync-badge sync-err';badge.textContent='❌ 推送失败';
-    toast('推送失败: '+e.message,'error');
-    return;
-  }
-  badge.className='sync-badge sync-ok';badge.textContent='✅ 已连接';
-}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function esc(s) { if (s == null) return ''; return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function fmtNum(n) { const v = Number(n) || 0; return v >= 10000 ? (v / 10000).toFixed(1).replace(/\.0$/, '') + '万' : String(v); }
+function fmtMoney(n) { return '¥' + (Number(n) || 0).toFixed(2); }
+function today() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 
-async function autoSync(){
-  if(!cfg.token)return;
-  try{
-    var result=await githubRead();
-    if(result.data){
-      state=result.data;
-      localStorage.setItem(DATA_KEY,JSON.stringify(state));
-    }
-  }catch(e){
-    // fallback to localStorage
-  }
-}
+// ========== GitHub 同步 ==========
+function syncToGithub() {
+  if (!githubToken) { showSyncConfig(); return; }
+  document.getElementById('syncIndicator').innerHTML = '🟡 同步中...';
+  
+  const data = JSON.stringify(state, null, 2);
+  const b64 = btoa(unescape(encodeURIComponent(data)));
+  const url = `https://api.github.com/repos/${githubRepo}/contents/workspace-data.json`;
 
-// ═══════════════════════════════════════
-// TOAST
-// ═══════════════════════════════════════
-function toast(msg,type){
-  var c=document.getElementById('toasts');
-  var d=document.createElement('div');
-  d.className='toast toast-'+(type||'info');
-  d.textContent=msg;
-  c.appendChild(d);
-  setTimeout(function(){if(d.parentNode)d.remove();},3500);
-}
-
-// ═══════════════════════════════════════
-// MODAL
-// ═══════════════════════════════════════
-function showModal(title,content,actions){
-  var m=document.getElementById('modal');
-  m.innerHTML='<div class="modal-title">'+title+'</div>'+content+'<div class="modal-actions">'+(actions||'')+'</div>';
-  document.getElementById('modalOverlay').classList.add('show');
-}
-function closeModal(){document.getElementById('modalOverlay').classList.remove('show');}
-document.getElementById('modalOverlay').onclick=function(e){if(e.target===this)closeModal();};
-
-// ═══════════════════════════════════════
-// SAVE STATE
-// ═══════════════════════════════════════
-function saveLocal(){localStorage.setItem(DATA_KEY,JSON.stringify(state));}
-
-// ═══════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════
-var currentSection='dashboard';
-var sectionTitles={dashboard:'📊 总览',accounts:'📱 账号管理',tasks:'📝 任务管理',reading:'📖 阅读管理',english:'🇬🇧 英语管理',hits:'🔥 热点管理',exercise:'💪 锻炼管理',wallet:'💰 记账管理',habits:'🌱 习惯管理',profile:'👤 个人资料',data:'📦 数据管理',settings:'⚙️ 同步设置'};
-var sectionRenderers={dashboard:renderDashboard,accounts:renderAccounts,tasks:renderTasks,reading:renderReading,english:renderEnglish,hits:renderHits,exercise:renderExercise,wallet:renderWallet,habits:renderHabits,profile:renderProfile,data:renderData,settings:renderSettings};
-
-function switchSection(id){
-  currentSection=id;
-  var items=document.querySelectorAll('.nav-item');
-  for(var i=0;i<items.length;i++){
-    items[i].classList.toggle('active',items[i].dataset.section===id);
-  }
-  document.getElementById('topTitle').textContent=sectionTitles[id]||id;
-  renderCurrentSection();
-}
-function renderCurrentSection(){
-  var fn=sectionRenderers[currentSection];
-  document.getElementById('content').innerHTML=fn?fn():'<div class="empty">页面不存在</div>';
-  var bindFn=window['bind_'+currentSection];
-  if(bindFn)bindFn();
-}
-
-// ═══════════════════════════════════════
-// SECTION: DASHBOARD
-// ═══════════════════════════════════════
-function renderDashboard(){
-  var accts=state.accounts||[];
-  var tasks=state.tasks||[];
-  var doneTasks=0;for(var i=0;i<tasks.length;i++)if(tasks[i].completed)doneTasks++;
-  var words=(state.english&&state.english.words)?state.english.words.length:0;
-  var txns=(state.wallet&&state.wallet.transactions)?state.wallet.transactions.length:0;
-  var h='<div class="section-title">📊 工作台总览</div>';
-  h+='<div class="stats-row">';
-  h+='<div class="stat-box"><div class="stat-num">'+accts.length+'</div><div class="stat-label">自媒体账号</div></div>';
-  h+='<div class="stat-box"><div class="stat-num">'+tasks.length+'</div><div class="stat-label">今日任务</div></div>';
-  h+='<div class="stat-box"><div class="stat-num">'+doneTasks+'</div><div class="stat-label">已完成</div></div>';
-  h+='<div class="stat-box"><div class="stat-num">'+words+'</div><div class="stat-label">英语单词</div></div>';
-  h+='<div class="stat-box"><div class="stat-num">'+txns+'</div><div class="stat-label">记账笔数</div></div>';
-  h+='</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">💡 快捷操作</span></div>';
-  h+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
-  h+='<button class="btn btn-primary" onclick="switchSection(\'accounts\')">📱 管理账号</button>';
-  h+='<button class="btn btn-primary" onclick="switchSection(\'tasks\')">📝 管理任务</button>';
-  h+='<button class="btn btn-secondary" onclick="switchSection(\'reading\')">📖 管理阅读</button>';
-  h+='<button class="btn btn-secondary" onclick="switchSection(\'english\')">🇬🇧 管理英语</button>';
-  h+='<button class="btn btn-secondary" onclick="switchSection(\'wallet\')">💰 管理记账</button>';
-  h+='<button class="btn btn-mint" onclick="pushToGitHub()">⬆️ 一键同步</button>';
-  h+='</div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">📊 同步状态</span></div>';
-  h+='<div style="font-size:12px;color:var(--text2);line-height:1.8">';
-  h+='🔑 Token: '+(cfg.token?'<span class="tag tag-green">已配置</span>':'<span class="tag" style="background:#fff0f0;color:#d14545">未配置</span>')+'<br>';
-  h+='📂 仓库: '+esc(cfg.owner+'/'+cfg.repo)+'<br>';
-  h+='📄 文件: '+esc(cfg.path)+'<br>';
-  h+='🕐 上次同步: '+(fileSha?'<span class="tag tag-green">已同步</span>':'<span class="tag">未同步</span>');
-  h+='</div></div>';
-  return h;
-}
-
-// ═══════════════════════════════════════
-// SECTION: ACCOUNTS
-// ═══════════════════════════════════════
-function renderAccounts(){
-  var accts=state.accounts||[];
-  var h='<div class="section-title">📱 自媒体账号管理</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">添加新账号</span></div>';
-  h+='<div class="form-row">';
-  h+='<div class="form-group"><label>平台</label><select class="select" id="accPlatform"><option>抖音</option><option>小红书</option><option>B站</option><option>快手</option><option>视频号</option><option>微博</option></select></div>';
-  h+='<div class="form-group"><label>账号名</label><input class="input" id="accName" placeholder="输入账号名"></div>';
-  h+='<div class="form-group"><label>粉丝数</label><input class="input" id="accFollowers" type="number" placeholder="0"></div>';
-  h+='<div class="form-group"><label>&nbsp;</label><button class="btn btn-primary" id="addAccBtn">+ 添加</button></div>';
-  h+='</div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">账号列表</span><span class="tag">'+accts.length+' 个</span></div>';
-  if(accts.length===0)h+='<div class="empty">暂无账号</div>';
-  else{
-    h+='<div class="table-wrap"><table><thead><tr><th>平台</th><th>账号名</th><th>粉丝</th><th>日涨粉</th><th>周涨粉</th><th>月涨粉</th><th>目标</th><th>操作</th></tr></thead><tbody>';
-    for(var i=0;i<accts.length;i++){var a=accts[i];var g=a.growth||{day:0,week:0,month:0,target:5000};
-      h+='<tr>';
-      h+='<td><b>'+esc(a.platform)+'</b></td>';
-      h+='<td>'+esc(a.name)+'</td>';
-      h+='<td>'+fmtNum(a.followers)+'</td>';
-      h+='<td><input class="input" style="width:60px;font-size:11px;padding:4px" data-aid="'+a.id+'" data-field="day" type="number" value="'+g.day+'"></td>';
-      h+='<td><input class="input" style="width:60px;font-size:11px;padding:4px" data-aid="'+a.id+'" data-field="week" type="number" value="'+g.week+'"></td>';
-      h+='<td><input class="input" style="width:60px;font-size:11px;padding:4px" data-aid="'+a.id+'" data-field="month" type="number" value="'+g.month+'"></td>';
-      h+='<td><input class="input" style="width:70px;font-size:11px;padding:4px" data-aid="'+a.id+'" data-field="target" type="number" value="'+g.target+'"></td>';
-      h+='<td><button class="btn btn-sm btn-secondary edit-acc" data-id="'+a.id+'">✏️</button> <button class="btn btn-sm btn-danger del-acc" data-id="'+a.id+'">🗑</button></td>';
-      h+='</tr>';
-    }
-    h+='</tbody></table></div>';
-  }
-  h+='</div>';
-  return h;
-}
-function bind_accounts(){
-  document.getElementById('addAccBtn').onclick=function(){
-    var p=document.getElementById('accPlatform').value,n=document.getElementById('accName').value.trim(),f=Number(document.getElementById('accFollowers').value)||0;
-    if(!n){toast('请输入账号名','error');return;}
-    state.accounts.push({id:uid(),platform:p,name:n,followers:f,active:false,growth:{day:0,week:0,month:0,target:5000}});
-    saveLocal();toast('✅ 账号已添加','success');renderCurrentSection();
-  };
-  var growthInputs=document.querySelectorAll('[data-aid]');
-  for(var i=0;i<growthInputs.length;i++){growthInputs[i].onchange=function(){
-    var id=this.dataset.aid,field=this.dataset.field,val=Number(this.value)||0;
-    for(var j=0;j<state.accounts.length;j++){if(state.accounts[j].id===id){if(!state.accounts[j].growth)state.accounts[j].growth={};state.accounts[j].growth[field]=val;break;}}
-    saveLocal();
-  };}
-  var dels=document.querySelectorAll('.del-acc');
-  for(var d=0;d<dels.length;d++){dels[d].onclick=function(){var id=this.dataset.id;
-    if(!confirm('确定删除该账号？'))return;
-    state.accounts=state.accounts.filter(function(a){return a.id!==id;});
-    saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-  var edits=document.querySelectorAll('.edit-acc');
-  for(var e=0;e<edits.length;e++){edits[e].onclick=function(){var id=this.dataset.id;
-    var acc=null;for(var j=0;j<state.accounts.length;j++)if(state.accounts[j].id===id){acc=state.accounts[j];break;}
-    if(!acc)return;
-    showModal('编辑账号','<div class="form-group"><label>平台</label><select class="select" id="editAccPlatform"><option'+(acc.platform==='抖音'?' selected':'')+'>抖音</option><option'+(acc.platform==='小红书'?' selected':'')+'>小红书</option><option'+(acc.platform==='B站'?' selected':'')+'>B站</option><option'+(acc.platform==='快手'?' selected':'')+'>快手</option><option'+(acc.platform==='视频号'?' selected':'')+'>视频号</option><option'+(acc.platform==='微博'?' selected':'')+'>微博</option></select></div><div class="form-group"><label>账号名</label><input class="input" id="editAccName" value="'+esc(acc.name)+'"></div><div class="form-group"><label>粉丝数</label><input class="input" id="editAccFollowers" type="number" value="'+acc.followers+'"></div>',
-    '<button class="btn btn-secondary" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="saveEditAcc(\''+id+'\')">💾 保存</button>');
-  };}
-}
-function saveEditAcc(id){
-  for(var i=0;i<state.accounts.length;i++){if(state.accounts[i].id===id){
-    state.accounts[i].platform=document.getElementById('editAccPlatform').value;
-    state.accounts[i].name=document.getElementById('editAccName').value.trim();
-    state.accounts[i].followers=Number(document.getElementById('editAccFollowers').value)||0;
-    break;
-  }}
-  saveLocal();closeModal();toast('✅ 已保存','success');renderCurrentSection();
-}
-
-// ═══════════════════════════════════════
-// SECTION: TASKS
-// ═══════════════════════════════════════
-function renderTasks(){
-  var tasks=state.tasks||[];
-  var pinned=state.pinnedTasks||[];
-  var h='<div class="section-title">📝 任务管理</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">📌 固定任务</span><button class="btn btn-sm btn-secondary" id="addPinnedBtn">+ 添加</button></div>';
-  if(pinned.length===0)h+='<div class="empty">暂无固定任务</div>';
-  else{h+='<div class="table-wrap"><table><thead><tr><th>状态</th><th>任务内容</th><th>操作</th></tr></thead><tbody>';
-    for(var i=0;i<pinned.length;i++){var p=pinned[i];
-      h+='<tr><td>'+(p.completed?'<span class="tag tag-green">✅ 完成</span>':'<span class="tag">⏳ 待做</span>')+'</td><td>'+esc(p.text)+'</td><td><button class="btn btn-sm btn-secondary edit-pinned" data-id="'+p.id+'">✏️</button> <button class="btn btn-sm btn-danger del-pinned" data-id="'+p.id+'">🗑</button></td></tr>';
-    }
-    h+='</tbody></table></div>';}
-  h+='</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">📝 今日任务</span><button class="btn btn-sm btn-secondary" id="addTaskBtn">+ 添加</button></div>';
-  if(tasks.length===0)h+='<div class="empty">暂无任务</div>';
-  else{h+='<div class="table-wrap"><table><thead><tr><th>状态</th><th>任务内容</th><th>日期</th><th>操作</th></tr></thead><tbody>';
-    for(var j=0;j<tasks.length;j++){var t=tasks[j];
-      h+='<tr><td>'+(t.completed?'<span class="tag tag-green">✅</span>':'<span class="tag">⏳</span>')+'</td><td>'+esc(t.text)+'</td><td>'+esc(t.date||'')+'</td><td><button class="btn btn-sm btn-secondary edit-task" data-id="'+t.id+'">✏️</button> <button class="btn btn-sm btn-danger del-task" data-id="'+t.id+'">🗑</button></td></tr>';
-    }
-    h+='</tbody></table></div>';}
-  h+='</div>';
-  return h;
-}
-function bind_tasks(){
-  document.getElementById('addPinnedBtn').onclick=function(){
-    showModal('添加固定任务','<div class="form-group"><label>任务内容</label><input class="input" id="newPinnedText" placeholder="输入任务内容"></div>',
-    '<button class="btn btn-secondary" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="doAddPinned()">添加</button>');
-  };
-  document.getElementById('addTaskBtn').onclick=function(){
-    showModal('添加今日任务','<div class="form-group"><label>任务内容</label><input class="input" id="newTaskText" placeholder="输入任务内容"></div>',
-    '<button class="btn btn-secondary" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="doAddTask()">添加</button>');
-  };
-  var delP=document.querySelectorAll('.del-pinned');
-  for(var i=0;i<delP.length;i++){delP[i].onclick=function(){var id=this.dataset.id;
-    state.pinnedTasks=state.pinnedTasks.filter(function(p){return p.id!==id;});
-    saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-  var delT=document.querySelectorAll('.del-task');
-  for(var j=0;j<delT.length;j++){delT[j].onclick=function(){var id=this.dataset.id;
-    state.tasks=state.tasks.filter(function(t){return t.id!==id;});
-    saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-  var editP=document.querySelectorAll('.edit-pinned');
-  for(var k=0;k<editP.length;k++){editP[k].onclick=function(){var id=this.dataset.id;
-    var item=null;for(var x=0;x<state.pinnedTasks.length;x++)if(state.pinnedTasks[x].id===id){item=state.pinnedTasks[x];break;}
-    if(!item)return;
-    showModal('编辑固定任务','<div class="form-group"><label>任务内容</label><input class="input" id="editPinnedText" value="'+esc(item.text)+'"></div>',
-    '<button class="btn btn-secondary" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="doEditPinned(\''+id+'\')">保存</button>');
-  };}
-  var editT=document.querySelectorAll('.edit-task');
-  for(var l=0;l<editT.length;l++){editT[l].onclick=function(){var id=this.dataset.id;
-    var item2=null;for(var y=0;y<state.tasks.length;y++)if(state.tasks[y].id===id){item2=state.tasks[y];break;}
-    if(!item2)return;
-    showModal('编辑任务','<div class="form-group"><label>任务内容</label><input class="input" id="editTaskText" value="'+esc(item2.text)+'"></div>',
-    '<button class="btn btn-secondary" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="doEditTask(\''+id+'\')">保存</button>');
-  };}
-}
-function doAddPinned(){var v=document.getElementById('newPinnedText').value.trim();if(!v)return;state.pinnedTasks.push({id:uid(),text:v,completed:false});saveLocal();closeModal();toast('✅ 已添加','success');renderCurrentSection();}
-function doAddTask(){var v=document.getElementById('newTaskText').value.trim();if(!v)return;state.tasks.push({id:uid(),text:v,completed:false,date:new Date().toISOString().slice(0,10)});saveLocal();closeModal();toast('✅ 已添加','success');renderCurrentSection();}
-function doEditPinned(id){var v=document.getElementById('editPinnedText').value.trim();if(!v)return;for(var i=0;i<state.pinnedTasks.length;i++)if(state.pinnedTasks[i].id===id){state.pinnedTasks[i].text=v;break;}saveLocal();closeModal();toast('✅ 已保存','success');renderCurrentSection();}
-function doEditTask(id){var v=document.getElementById('editTaskText').value.trim();if(!v)return;for(var i=0;i<state.tasks.length;i++)if(state.tasks[i].id===id){state.tasks[i].text=v;break;}saveLocal();closeModal();toast('✅ 已保存','success');renderCurrentSection();}
-
-// ═══════════════════════════════════════
-// SECTION: READING
-// ═══════════════════════════════════════
-function renderReading(){
-  var rd=state.reading||{reading:[],want:[],finished:[],recommend:[]};
-  var cols=[{key:'reading',title:'📖 在读',cls:'tag-blue'},{key:'want',title:'📋 想读',cls:''},{key:'finished',title:'✅ 已读完',cls:'tag-green'}];
-  var h='<div class="section-title">📖 阅读管理</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">添加书籍</span></div>';
-  h+='<div class="form-row">';
-  h+='<div class="form-group"><label>书名</label><input class="input" id="bookTitle" placeholder="书名"></div>';
-  h+='<div class="form-group"><label>作者</label><input class="input" id="bookAuthor" placeholder="作者"></div>';
-  h+='<div class="form-group"><label>总页数</label><input class="input" id="bookPages" type="number" placeholder="0"></div>';
-  h+='<div class="form-group"><label>分类</label><select class="select" id="bookCol"><option value="reading">在读</option><option value="want">想读</option><option value="finished">已读完</option></select></div>';
-  h+='<div class="form-group"><label>&nbsp;</label><button class="btn btn-primary" id="addBookBtn">+ 添加</button></div>';
-  h+='</div></div>';
-  for(var c=0;c<cols.length;c++){var col=cols[c];var list=rd[col.key]||[];
-    h+='<div class="card"><div class="card-header"><span class="card-title">'+col.title+'</span><span class="tag '+col.cls+'">'+list.length+' 本</span></div>';
-    if(list.length===0)h+='<div class="empty">暂无书籍</div>';
-    else{h+='<div class="table-wrap"><table><thead><tr><th>书名</th><th>作者</th><th>进度</th><th>操作</th></tr></thead><tbody>';
-      for(var i=0;i<list.length;i++){var b=list[i];var pg=b.page||0;var tp=b.totalPage||0;var pct=tp>0?Math.round(pg/tp*100):0;
-        h+='<tr><td><b>'+esc(b.title)+'</b></td><td>'+esc(b.author||'')+'</td><td>'+pg+'/'+tp+' 页 ('+pct+'%)</td><td><button class="btn btn-sm btn-secondary edit-book" data-col="'+col.key+'" data-idx="'+i+'">✏️</button> <button class="btn btn-sm btn-danger del-book" data-col="'+col.key+'" data-idx="'+i+'">🗑</button></td></tr>';
+  fetch(url, { headers: { 'Authorization': '***' + githubToken } })
+    .then(r => r.ok ? r.json() : null)
+    .then(existing => {
+      const body = { message: '🔄 Admin sync ' + new Date().toLocaleString('zh-CN'), content: b64, branch: 'main' };
+      if (existing && existing.sha) body.sha = existing.sha;
+      return fetch(url, { method: 'PUT', headers: { 'Authorization': '***' + githubToken, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    })
+    .then(r => {
+      if (r && r.ok) {
+        document.getElementById('syncIndicator').innerHTML = '🟢 已同步';
+        toast('同步成功！', 'success');
+      } else {
+        document.getElementById('syncIndicator').innerHTML = '🔴 同步失败';
+        toast('同步失败', 'error');
       }
-      h+='</tbody></table></div>';}
-    h+='</div>';
-  }
-  return h;
+    })
+    .catch(() => {
+      document.getElementById('syncIndicator').innerHTML = '🔴 网络错误';
+      toast('网络错误', 'error');
+    });
 }
-function bind_reading(){
-  document.getElementById('addBookBtn').onclick=function(){
-    var t=document.getElementById('bookTitle').value.trim(),a=document.getElementById('bookAuthor').value.trim(),p=Number(document.getElementById('bookPages').value)||0,col=document.getElementById('bookCol').value;
-    if(!t){toast('请输入书名','error');return;}
-    if(!state.reading)state.reading={reading:[],want:[],finished:[],recommend:[]};
-    if(!state.reading[col])state.reading[col]=[];
-    state.reading[col].push({id:uid(),title:t,author:a,page:col==='finished'?p:0,totalPage:p,added:new Date().toISOString().slice(0,10)});
-    saveLocal();toast('✅ 已添加','success');renderCurrentSection();
+
+function syncFromGithub() {
+  if (!githubToken) { showSyncConfig(); return; }
+  document.getElementById('syncIndicator').innerHTML = '🟡 拉取中...';
+
+  fetch(`https://api.github.com/repos/${githubRepo}/contents/workspace-data.json`, {
+    headers: { 'Authorization': '***' + githubToken }
+  })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => {
+      const content = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+      state = ensureDefaults(content);
+      saveState();
+      document.getElementById('syncIndicator').innerHTML = '🟢 已同步';
+      render('dashboard');
+      toast('数据已从 GitHub 拉取', 'success');
+    })
+    .catch(() => {
+      document.getElementById('syncIndicator').innerHTML = '🔴 拉取失败';
+      toast('拉取失败', 'error');
+    });
+}
+
+function showSyncConfig() {
+  showModal('同步配置', `
+    <div class="form-group"><label class="form-label">GitHub Token</label><input type="password" class="input" id="syncToken" placeholder="ghp_xxxx" value="${esc(githubToken)}"></div>
+    <div class="form-group"><label class="form-label">仓库地址</label><input type="text" class="input" id="syncRepo" placeholder="username/repo" value="${esc(githubRepo)}"></div>
+    <button class="btn btn-primary btn-block" onclick="saveSyncConfig()">💾 保存配置</button>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px;text-align:center">保存后即可使用同步功能</div>
+  `);
+}
+
+function saveSyncConfig() {
+  githubToken = document.getElementById('syncToken').value;
+  githubRepo = document.getElementById('syncRepo').value;
+  localStorage.setItem(GITHUB_TOKEN_KEY, githubToken);
+  localStorage.setItem(GITHUB_REPO_KEY, githubRepo);
+  closeModal();
+  toast('同步配置已保存', 'success');
+}
+
+// ========== 导航 ==========
+const pages = [
+  { id: 'dashboard', icon: '📊', label: '工作台' },
+  { id: 'sync', icon: '🔄', label: '同步配置' },
+  { id: 'accounts', icon: '📱', label: '账号管理' },
+  { id: 'tasks', icon: '📋', label: '任务规划' },
+  { id: 'pinned', icon: '📌', label: '置顶任务' },
+  { id: 'reading', icon: '📖', label: '阅读管理' },
+  { id: 'english', icon: '📚', label: '英语学习' },
+  { id: 'hits', icon: '🔥', label: '热点追踪' },
+  { id: 'exercise', icon: '💪', label: '锻炼计划' },
+  { id: 'wallet', icon: '💰', label: '钱包记账' },
+  { id: 'review', icon: '📝', label: '复盘总结' },
+  { id: 'editing', icon: '🎬', label: '剪辑教程' },
+  { id: 'moods', icon: '💝', label: '心情日记' },
+  { id: 'tools', icon: '🛠️', label: '工具箱' }
+];
+
+function initNav() {
+  document.getElementById('nav').innerHTML = pages.map(p =>
+    `<div class="nav-item${p.id === 'dashboard' ? ' active' : ''}" data-page="${p.id}" onclick="go('${p.id}')"><span>${p.icon}</span><span>${p.label}</span></div>`
+  ).join('');
+}
+
+function go(id) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === id));
+  const p = pages.find(p => p.id === id);
+  document.getElementById('pageTitle').textContent = p.icon + ' ' + p.label;
+  render(id);
+}
+
+// ========== 渲染 ==========
+function render(id) {
+  const el = document.getElementById('content');
+  const r = { dashboard: renderDashboard, sync: renderSync, accounts: renderAccounts, tasks: renderTasks, pinned: renderPinned, reading: renderReading, english: renderEnglish, hits: renderHits, exercise: renderExercise, wallet: renderWallet, review: renderReview, editing: renderEditing, moods: renderMoods, tools: renderTools };
+  el.innerHTML = (r[id] || renderDashboard)();
+}
+
+function renderDashboard() {
+  const totalFans = state.accounts.reduce((s, a) => s + (a.followers || 0), 0);
+  const pendingTasks = state.tasks.filter(t => !t.completed).length;
+  const income = state.wallet.transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+  const expense = state.wallet.transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+  return `
+    <div class="stats">
+      <div class="stat"><div class="icon">👥</div><div class="value">${fmtNum(totalFans)}</div><div class="label">总粉丝</div></div>
+      <div class="stat"><div class="icon">📋</div><div class="value">${pendingTasks}</div><div class="label">待办任务</div></div>
+      <div class="stat"><div class="icon">💰</div><div class="value">${fmtMoney(income)}</div><div class="label">总收入</div></div>
+      <div class="stat"><div class="icon">🛒</div><div class="value">${fmtMoney(expense)}</div><div class="label">总支出</div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header"><span class="card-title">📋 待办任务</span><button class="btn btn-primary btn-sm" onclick="go('tasks')">管理</button></div>
+        ${state.tasks.filter(t => !t.completed).slice(0, 5).map(t => `<div class="todo-item"><input type="checkbox" class="todo-check" onchange="toggleTask('${t.id}')"><span class="todo-text">${esc(t.text)}</span><span style="font-size:11px;color:var(--text3)">${t.date || ''}</span></div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">📱 账号概览</span><button class="btn btn-secondary btn-sm" onclick="go('accounts')">管理</button></div>
+        ${state.accounts.map(a => `<div class="acc-card"><div class="acc-icon">${a.platform === '抖音' ? '🎵' : a.platform === '小红书' ? '📕' : '📺'}</div><div class="acc-info"><div class="acc-name">${esc(a.name)}</div><div class="acc-meta">${a.platform} · ${fmtNum(a.followers)}粉丝</div></div></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function renderSync() {
+  return `
+    <div class="sync-box">
+      <div style="font-size:48px;margin-bottom:12px">☁️</div>
+      <h3>GitHub 同步配置</h3>
+      <p>修改后台数据后，同步到 GitHub 仓库，工作台自动加载最新数据</p>
+      <div class="form-group" style="text-align:left"><label class="form-label">GitHub Token</label><input type="password" class="input" id="syncToken" placeholder="ghp_xxxx" value="${esc(githubToken)}"></div>
+      <div class="form-group" style="text-align:left"><label class="form-label">仓库地址</label><input type="text" class="input" id="syncRepo" placeholder="username/repo" value="${esc(githubRepo)}"></div>
+      <div class="sync-actions">
+        <button class="btn btn-primary btn-lg" onclick="saveSyncConfigFromPage()">💾 保存配置</button>
+        <button class="btn btn-success btn-lg" onclick="syncToGithub()">⬆️ 推送到 GitHub</button>
+        <button class="btn btn-secondary btn-lg" onclick="syncFromGithub()">⬇️ 从 GitHub 拉取</button>
+      </div>
+      <div class="sync-status" id="syncStatus"></div>
+      <div style="margin-top:16px;font-size:12px;color:var(--text3);text-align:left">
+        <p><strong>使用说明：</strong></p>
+        <p>1. 在 GitHub 生成 Personal Access Token</p>
+        <p>2. 填入 Token 和仓库地址（如 zeshanzhou98-coder/warm-heart-match-game）</p>
+        <p>3. 点击「保存配置」</p>
+        <p>4. 修改数据后点击「推送到 GitHub」</p>
+        <p>5. 工作台页面刷新即可看到最新数据</p>
+      </div>
+    </div>`;
+}
+
+function saveSyncConfigFromPage() {
+  githubToken = document.getElementById('syncToken').value;
+  githubRepo = document.getElementById('syncRepo').value;
+  localStorage.setItem(GITHUB_TOKEN_KEY, githubToken);
+  localStorage.setItem(GITHUB_REPO_KEY, githubRepo);
+  toast('配置已保存', 'success');
+}
+
+function renderAccounts() {
+  return `
+    <div class="stats">${state.accounts.map(a => `<div class="stat"><div class="icon">${a.platform === '抖音' ? '🎵' : a.platform === '小红书' ? '📕' : '📺'}</div><div class="value">${fmtNum(a.followers)}</div><div class="label">${a.platform}</div></div>`).join('')}</div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📱 账号列表</span><button class="btn btn-primary btn-sm" onclick="showAddAccount()">+ 添加</button></div>
+      ${state.accounts.map(a => `<div class="acc-card"><div class="acc-icon">${a.platform === '抖音' ? '🎵' : a.platform === '小红书' ? '📕' : '📺'}</div><div class="acc-info"><div class="acc-name">${esc(a.name)}</div><div class="acc-meta">${a.platform} · 目标 ${fmtNum(a.growth?.target || 5000)}</div></div><div style="text-align:right"><div style="font-weight:700;color:var(--pink-dark)">${fmtNum(a.followers)}</div><div style="font-size:11px;color:var(--mint-dark)">+${a.growth?.day || 0}/天</div></div><button class="btn btn-danger btn-sm" onclick="deleteItem('accounts','${a.id}')">✕</button></div>`).join('')}
+    </div>`;
+}
+
+function renderTasks() {
+  const done = state.tasks.filter(t => t.completed).length;
+  return `
+    <div class="stats">
+      <div class="stat"><div class="icon">📋</div><div class="value">${state.tasks.length}</div><div class="label">总任务</div></div>
+      <div class="stat"><div class="icon">✅</div><div class="value">${done}</div><div class="label">已完成</div></div>
+      <div class="stat"><div class="icon">📊</div><div class="value">${state.tasks.length ? Math.round(done / state.tasks.length * 100) : 0}%</div><div class="label">完成率</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📋 任务列表</span><button class="btn btn-primary btn-sm" onclick="showAddTask()">+ 添加</button></div>
+      ${state.tasks.map(t => `<div class="todo-item"><input type="checkbox" class="todo-check" ${t.completed ? 'checked' : ''} onchange="toggleTask('${t.id}')"><span class="todo-text ${t.completed ? 'done' : ''}">${esc(t.text)}</span><span style="font-size:11px;color:var(--text3)">${t.date || ''}</span><button class="btn btn-danger btn-sm" onclick="deleteItem('tasks','${t.id}')">✕</button></div>`).join('')}
+    </div>`;
+}
+
+function renderPinned() {
+  return `
+    <div class="card">
+      <div class="card-header"><span class="card-title">📌 置顶任务</span><button class="btn btn-primary btn-sm" onclick="showAddPinned()">+ 添加</button></div>
+      ${state.pinnedTasks.map(t => `<div class="todo-item"><input type="checkbox" class="todo-check" ${t.completed ? 'checked' : ''} onchange="togglePinned('${t.id}')"><span class="todo-text ${t.completed ? 'done' : ''}">${esc(t.text)}</span><button class="btn btn-danger btn-sm" onclick="deleteItem('pinnedTasks','${t.id}')">✕</button></div>`).join('')}
+    </div>`;
+}
+
+function renderReading() {
+  return `
+    <div class="grid-3">
+      <div class="card"><div class="card-title">📖 在读</div>${state.reading.reading.map(b => `<div class="acc-card"><div class="acc-icon">📖</div><div class="acc-info"><div class="acc-name">${esc(b.title)}</div><div class="acc-meta">${esc(b.author)} · ${b.page}/${b.totalPage}页</div></div><div class="progress" style="width:60px"><div class="progress-bar" style="width:${Math.round(b.page / b.totalPage * 100)}%"></div></div><button class="btn btn-danger btn-sm" onclick="deleteItemNested('reading','reading','${b.id}')">✕</button></div>`).join('') || '<div style="color:var(--text3);padding:8px">暂无</div>'}</div>
+      <div class="card"><div class="card-title">📚 想读</div>${state.reading.want.map(b => `<div class="acc-card"><div class="acc-icon">📚</div><div class="acc-info"><div class="acc-name">${esc(b.title)}</div><div class="acc-meta">${esc(b.author)}</div></div><button class="btn btn-danger btn-sm" onclick="deleteItemNested('reading','want','${b.id}')">✕</button></div>`).join('') || '<div style="color:var(--text3);padding:8px">暂无</div>'}</div>
+      <div class="card"><div class="card-title">✅ 已读</div>${state.reading.finished.map(b => `<div class="acc-card"><div class="acc-icon">✅</div><div class="acc-info"><div class="acc-name">${esc(b.title)}</div><div class="acc-meta">${esc(b.author)} · ${b.totalPage}页</div></div><button class="btn btn-danger btn-sm" onclick="deleteItemNested('reading','finished','${b.id}')">✕</button></div>`).join('') || '<div style="color:var(--text3);padding:8px">暂无</div>'}</div>
+    </div>`;
+}
+
+function renderEnglish() {
+  const words = state.english.words || [];
+  const newW = words.filter(w => w.status === 'new').length;
+  const reviewW = words.filter(w => w.status === 'review').length;
+  const masteredW = words.filter(w => w.status === 'mastered').length;
+  return `
+    <div class="stats">
+      <div class="stat"><div class="icon">📖</div><div class="value">${words.length}</div><div class="label">总单词</div></div>
+      <div class="stat"><div class="icon">🆕</div><div class="value">${newW}</div><div class="label">新词</div></div>
+      <div class="stat"><div class="icon">🔄</div><div class="value">${reviewW}</div><div class="label">复习</div></div>
+      <div class="stat"><div class="icon">✅</div><div class="value">${masteredW}</div><div class="label">已掌握</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📖 单词库</span><button class="btn btn-primary btn-sm" onclick="showAddWord()">+ 添加</button></div>
+      <table><thead><tr><th>单词</th><th>释义</th><th>状态</th><th>操作</th></tr></thead>
+      <tbody>${words.map(w => `<tr><td style="font-weight:700">${esc(w.word)}</td><td>${esc(w.meaning)}</td><td><span class="tag ${w.status === 'new' ? 'tag-orange' : w.status === 'review' ? 'tag-blue' : 'tag-green'}">${w.status === 'new' ? '新词' : w.status === 'review' ? '复习' : '已掌握'}</span></td><td><button class="btn btn-sm btn-secondary" onclick="cycleWord('${w.id}')">切换</button> <button class="btn btn-sm btn-danger" onclick="deleteWord('${w.id}')">✕</button></td></tr>`).join('')}</tbody></table>
+    </div>`;
+}
+
+function renderHits() {
+  return `
+    <div class="card">
+      <div class="card-header"><span class="card-title">🔥 热点列表</span><button class="btn btn-primary btn-sm" onclick="showAddHit()">+ 添加</button></div>
+      ${state.hits.map((h, i) => `<div class="acc-card"><div class="acc-icon">🔥</div><div class="acc-info"><div class="acc-name">${esc(h.title)}</div><div class="acc-meta">${h.heat} · ${h.tag}</div></div><button class="btn btn-danger btn-sm" onclick="state.hits.splice(${i},1);save();render('hits')">✕</button></div>`).join('')}
+    </div>`;
+}
+
+function renderExercise() {
+  const done = state.exercises.filter(e => e.done).length;
+  return `
+    <div class="stats">
+      <div class="stat"><div class="icon">💪</div><div class="value">${state.exercises.length}</div><div class="label">训练计划</div></div>
+      <div class="stat"><div class="icon">✅</div><div class="value">${done}</div><div class="label">已完成</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">💪 锻炼列表</span><button class="btn btn-primary btn-sm" onclick="showAddExercise()">+ 添加</button></div>
+      ${state.exercises.map((e, i) => `<div class="todo-item"><input type="checkbox" class="todo-check" ${e.done ? 'checked' : ''} onchange="state.exercises[${i}].done=!state.exercises[${i}].done;save();render('exercise')"><span class="todo-text ${e.done ? 'done' : ''}">${esc(e.title)}</span><span class="tag tag-blue">${e.dur}</span><button class="btn btn-danger btn-sm" onclick="state.exercises.splice(${i},1);save();render('exercise')">✕</button></div>`).join('')}
+    </div>`;
+}
+
+function renderWallet() {
+  const income = state.wallet.transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+  const expense = state.wallet.transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+  return `
+    <div class="stats">
+      <div class="stat"><div class="icon">💰</div><div class="value" style="color:var(--mint-dark)">${fmtMoney(income)}</div><div class="label">总收入</div></div>
+      <div class="stat"><div class="icon">🛒</div><div class="value" style="color:#d14545">${fmtMoney(expense)}</div><div class="label">总支出</div></div>
+      <div class="stat"><div class="icon">💎</div><div class="value">${fmtMoney(income - expense)}</div><div class="label">结余</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">📝 账单</span><button class="btn btn-primary btn-sm" onclick="showAddTransaction()">+ 记一笔</button></div>
+      <table><thead><tr><th>日期</th><th>分类</th><th>说明</th><th>方式</th><th>金额</th><th>操作</th></tr></thead>
+      <tbody>${state.wallet.transactions.map(t => `<tr><td>${t.date}</td><td><span class="tag">${t.category}</span></td><td>${esc(t.note)}</td><td>${t.method}</td><td style="font-weight:700;color:${t.type === 'income' ? 'var(--mint-dark)' : '#d14545'}">${t.type === 'income' ? '+' : '-'}${fmtMoney(t.amount)}</td><td><button class="btn btn-danger btn-sm" onclick="deleteItem('wallet.transactions','${t.id}')">✕</button></td></tr>`).join('')}</tbody></table>
+    </div>`;
+}
+
+function renderReview() {
+  return `
+    <div class="grid-2">
+      <div class="card"><div class="card-title">📝 待复盘</div>${state.review.pending.map(v => `<div class="acc-card"><div class="acc-icon">📝</div><div class="acc-info"><div class="acc-name">${esc(v.title)}</div><div class="acc-meta">${v.date}</div></div></div>`).join('') || '<div style="color:var(--text3);padding:16px;text-align:center">暂无</div>'}</div>
+      <div class="card"><div class="card-title">✅ 已完成</div>${state.review.done.map(v => `<div class="acc-card"><div class="acc-icon">✅</div><div class="acc-info"><div class="acc-name">${esc(v.title)}</div><div class="acc-meta">${v.date}</div></div></div>`).join('') || '<div style="color:var(--text3);padding:16px;text-align:center">暂无</div>'}</div>
+    </div>`;
+}
+
+function renderEditing() {
+  return `<div class="card"><div class="card-title">🎬 剪辑模块</div><div style="color:var(--text3);padding:16px">数据存储在工作台本地，管理后台暂不支持编辑此模块</div></div>`;
+}
+
+function renderMoods() {
+  return `<div class="card"><div class="card-title">💝 心情日记</div><div style="color:var(--text3);padding:16px">心情数据存储在工作台本地，管理后台暂不支持编辑</div></div>`;
+}
+
+function renderTools() {
+  return `
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🎨 背景设置</div>
+        <div class="form-group" style="margin-top:12px"><label class="form-label">背景图片 URL</label><input type="text" class="input" id="bgUrl" value="${esc(state.tools.currentBg)}"></div>
+        <button class="btn btn-primary" onclick="state.tools.currentBg=document.getElementById('bgUrl').value;save();toast('背景已保存','success')">💾 保存</button>
+      </div>
+      <div class="card">
+        <div class="card-title">📊 数据统计</div>
+        <div style="margin-top:12px;font-size:13px;line-height:2">
+          <div>📱 账号：${state.accounts.length}</div>
+          <div>📋 任务：${state.tasks.length}</div>
+          <div>📌 置顶：${state.pinnedTasks.length}</div>
+          <div>📖 单词：${state.english.words.length}</div>
+          <div>💰 账单：${state.wallet.transactions.length}</div>
+          <div>🔥 热点：${state.hits.length}</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ 数据管理</div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-secondary" onclick="exportData()">📤 导出 JSON</button>
+        <button class="btn btn-secondary" onclick="importData()">📥 导入 JSON</button>
+        <button class="btn btn-danger" onclick="if(confirm('确定重置？')){state=getDefaultState();save();render('dashboard');toast('已重置','success')}">🗑️ 重置数据</button>
+      </div>
+    </div>`;
+}
+
+// ========== 操作 ==========
+function toggleTask(id) { const t = state.tasks.find(t => t.id === id); if (t) { t.completed = !t.completed; save(); render('tasks'); } }
+function togglePinned(id) { const t = state.pinnedTasks.find(t => t.id === id); if (t) { t.completed = !t.completed; save(); render('pinned'); } }
+function deleteItem(arr, id) { if (arr.includes('.')) { const [a, b] = arr.split('.'); state[a][b] = state[a][b].filter(i => i.id !== id); } else { state[arr] = state[arr].filter(i => i.id !== id); } save(); render(pages.find(p => p.active)?.id || 'dashboard'); toast('已删除'); }
+function deleteItemNested(parent, child, id) { state[parent][child] = state[parent][child].filter(i => i.id !== id); save(); render('reading'); toast('已删除'); }
+function cycleWord(id) { const w = state.english.words.find(w => w.id === id); if (w) { w.status = { new: 'review', review: 'mastered', mastered: 'new' }[w.status]; save(); render('english'); } }
+function deleteWord(id) { state.english.words = state.english.words.filter(w => w.id !== id); save(); render('english'); toast('已删除'); }
+
+function showModal(title, body) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = body;
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+function showAddAccount() {
+  showModal('添加账号', `
+    <div class="form-group"><label class="form-label">平台</label><select class="select" id="mPlatform"><option>抖音</option><option>小红书</option><option>B站</option><option>快手</option><option>视频号</option></select></div>
+    <div class="form-group"><label class="form-label">账号名</label><input type="text" class="input" id="mName"></div>
+    <div class="form-group"><label class="form-label">粉丝数</label><input type="number" class="input" id="mFollowers" value="0"></div>
+    <div class="form-group"><label class="form-label">目标粉丝</label><input type="number" class="input" id="mTarget" value="5000"></div>
+    <button class="btn btn-primary btn-block" onclick="addAccount()">添加</button>`);
+}
+function addAccount() {
+  const name = document.getElementById('mName').value; if (!name) { toast('请输入账号名', 'error'); return; }
+  state.accounts.push({ id: uid(), platform: document.getElementById('mPlatform').value, name, followers: Number(document.getElementById('mFollowers').value) || 0, active: false, growth: { day: 0, week: 0, month: 0, target: Number(document.getElementById('mTarget').value) || 5000 } });
+  save(); closeModal(); render('accounts'); toast('已添加', 'success');
+}
+
+function showAddTask() {
+  showModal('添加任务', `
+    <div class="form-group"><label class="form-label">任务内容</label><input type="text" class="input" id="mText"></div>
+    <div class="form-group"><label class="form-label">日期</label><input type="date" class="input" id="mDate" value="${today()}"></div>
+    <button class="btn btn-primary btn-block" onclick="addTask()">添加</button>`);
+}
+function addTask() {
+  const text = document.getElementById('mText').value; if (!text) { toast('请输入任务', 'error'); return; }
+  state.tasks.push({ id: uid(), text, completed: false, date: document.getElementById('mDate').value });
+  save(); closeModal(); render('tasks'); toast('已添加', 'success');
+}
+
+function showAddPinned() {
+  showModal('添加置顶任务', `
+    <div class="form-group"><label class="form-label">任务内容</label><input type="text" class="input" id="mText"></div>
+    <button class="btn btn-primary btn-block" onclick="addPinned()">添加</button>`);
+}
+function addPinned() {
+  const text = document.getElementById('mText').value; if (!text) { toast('请输入内容', 'error'); return; }
+  state.pinnedTasks.push({ id: uid(), text, completed: false });
+  save(); closeModal(); render('pinned'); toast('已添加', 'success');
+}
+
+function showAddWord() {
+  showModal('添加单词', `
+    <div class="form-group"><label class="form-label">单词</label><input type="text" class="input" id="mWord"></div>
+    <div class="form-group"><label class="form-label">释义</label><input type="text" class="input" id="mMeaning"></div>
+    <div class="form-group"><label class="form-label">状态</label><select class="select" id="mStatus"><option value="new">新词</option><option value="review">复习</option><option value="mastered">已掌握</option></select></div>
+    <button class="btn btn-primary btn-block" onclick="addWord()">添加</button>`);
+}
+function addWord() {
+  const word = document.getElementById('mWord').value; if (!word) { toast('请输入单词', 'error'); return; }
+  state.english.words.push({ id: uid(), word, meaning: document.getElementById('mMeaning').value, status: document.getElementById('mStatus').value });
+  save(); closeModal(); render('english'); toast('已添加', 'success');
+}
+
+function showAddHit() {
+  showModal('添加热点', `
+    <div class="form-group"><label class="form-label">标题</label><input type="text" class="input" id="mTitle" placeholder="#话题"></div>
+    <div class="form-group"><label class="form-label">热度</label><input type="text" class="input" id="mHeat" placeholder="1.2亿"></div>
+    <div class="form-group"><label class="form-label">标签</label><select class="select" id="mTag"><option>穿搭</option><option>AI</option><option>拍摄</option><option>新闻</option></select></div>
+    <div class="form-group"><label class="form-label">链接</label><input type="text" class="input" id="mLink"></div>
+    <button class="btn btn-primary btn-block" onclick="addHit()">添加</button>`);
+}
+function addHit() {
+  const title = document.getElementById('mTitle').value; if (!title) { toast('请输入标题', 'error'); return; }
+  state.hits.push({ title, heat: document.getElementById('mHeat').value, tag: document.getElementById('mTag').value, link: document.getElementById('mLink').value });
+  save(); closeModal(); render('hits'); toast('已添加', 'success');
+}
+
+function showAddExercise() {
+  showModal('添加锻炼', `
+    <div class="form-group"><label class="form-label">名称</label><input type="text" class="input" id="mTitle"></div>
+    <div class="form-group"><label class="form-label">时长</label><input type="text" class="input" id="mDur" placeholder="08:17"></div>
+    <div class="form-group"><label class="form-label">BV号</label><input type="text" class="input" id="mBvid" placeholder="BV1xxx"></div>
+    <div class="form-group"><label class="form-label">UP主</label><input type="text" class="input" id="mUp"></div>
+    <button class="btn btn-primary btn-block" onclick="addExercise()">添加</button>`);
+}
+function addExercise() {
+  const title = document.getElementById('mTitle').value; if (!title) { toast('请输入名称', 'error'); return; }
+  state.exercises.push({ title, dur: document.getElementById('mDur').value, bvid: document.getElementById('mBvid').value, up: document.getElementById('mUp').value, done: false });
+  save(); closeModal(); render('exercise'); toast('已添加', 'success');
+}
+
+function showAddTransaction() {
+  showModal('记一笔', `
+    <div class="form-group"><label class="form-label">类型</label><select class="select" id="mType"><option value="expense">支出</option><option value="income">收入</option></select></div>
+    <div class="form-group"><label class="form-label">分类</label><select class="select" id="mCat"><option>餐饮</option><option>交通</option><option>购物</option><option>娱乐</option><option>居住</option><option>服饰</option><option>咖啡</option><option>副业</option><option>红包</option><option>其他</option></select></div>
+    <div class="form-group"><label class="form-label">金额</label><input type="number" class="input" id="mAmount"></div>
+    <div class="form-group"><label class="form-label">说明</label><input type="text" class="input" id="mNote"></div>
+    <div class="form-group"><label class="form-label">方式</label><select class="select" id="mMethod"><option>微信</option><option>支付宝</option><option>银行卡</option></select></div>
+    <button class="btn btn-primary btn-block" onclick="addTransaction()">记录</button>`);
+}
+function addTransaction() {
+  const amount = Number(document.getElementById('mAmount').value); if (!amount) { toast('请输入金额', 'error'); return; }
+  state.wallet.transactions.unshift({ id: uid(), type: document.getElementById('mType').value, amount, category: document.getElementById('mCat').value, method: document.getElementById('mMethod').value, note: document.getElementById('mNote').value, date: today() });
+  save(); closeModal(); render('wallet'); toast('已记录', 'success');
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'workspace-data.json'; a.click();
+  toast('已导出', 'success');
+}
+
+function importData() {
+  const input = document.createElement('input'); input.type = 'file'; input.accept = '.json';
+  input.onchange = e => {
+    const reader = new FileReader();
+    reader.onload = ev => { try { state = ensureDefaults(JSON.parse(ev.target.result)); save(); render('dashboard'); toast('已导入', 'success'); } catch (err) { toast('文件格式错误', 'error'); } };
+    reader.readAsText(e.target.files[0]);
   };
-  var dels=document.querySelectorAll('.del-book');
-  for(var i=0;i<dels.length;i++){dels[i].onclick=function(){var col=this.dataset.col,idx=Number(this.dataset.idx);
-    state.reading[col].splice(idx,1);saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-  var edits=document.querySelectorAll('.edit-book');
-  for(var j=0;j<edits.length;j++){edits[j].onclick=function(){var col=this.dataset.col,idx=Number(this.dataset.idx);
-    var b=state.reading[col][idx];
-    showModal('编辑书籍','<div class="form-group"><label>书名</label><input class="input" id="editBookTitle" value="'+esc(b.title)+'"></div><div class="form-group"><label>作者</label><input class="input" id="editBookAuthor" value="'+esc(b.author||'')+'"></div><div class="form-group"><label>总页数</label><input class="input" id="editBookPages" type="number" value="'+(b.totalPage||0)+'"></div><div class="form-group"><label>已读页数</label><input class="input" id="editBookPage" type="number" value="'+(b.page||0)+'"></div>',
-    '<button class="btn btn-secondary" onclick="closeModal()">取消</button><button class="btn btn-primary" onclick="doEditBook(\''+col+'\','+idx+')">保存</button>');
-  };}
-}
-function doEditBook(col,idx){
-  var b=state.reading[col][idx];
-  b.title=document.getElementById('editBookTitle').value.trim();
-  b.author=document.getElementById('editBookAuthor').value.trim();
-  b.totalPage=Number(document.getElementById('editBookPages').value)||0;
-  b.page=Number(document.getElementById('editBookPage').value)||0;
-  saveLocal();closeModal();toast('✅ 已保存','success');renderCurrentSection();
+  input.click();
 }
 
-// ═══════════════════════════════════════
-// SECTION: ENGLISH
-// ═══════════════════════════════════════
-function renderEnglish(){
-  var eng=state.english||{words:[],dialogues:[]};
-  var words=eng.words||[];var dialogues=eng.dialogues||[];
-  var cnts={new:0,review:0,mastered:0};
-  for(var i=0;i<words.length;i++){cnts[words[i].status]=(cnts[words[i].status]||0)+1;}
-  var h='<div class="section-title">🇬🇧 英语管理</div>';
-  h+='<div class="stats-row"><div class="stat-box"><div class="stat-num">'+cnts['new']+'</div><div class="stat-label">新词</div></div><div class="stat-box"><div class="stat-num">'+cnts['review']+'</div><div class="stat-label">复习中</div></div><div class="stat-box"><div class="stat-num">'+cnts['mastered']+'</div><div class="stat-label">已掌握</div></div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">📝 添加单词</span></div>';
-  h+='<div class="form-row"><div class="form-group"><label>单词</label><input class="input" id="newWord" placeholder="word"></div><div class="form-group"><label>释义</label><input class="input" id="newMeaning" placeholder="meaning"></div><div class="form-group"><label>&nbsp;</label><button class="btn btn-primary" id="addWordBtn">+ 添加</button></div></div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">单词列表</span><span class="tag">'+words.length+' 个</span></div>';
-  if(words.length===0)h+='<div class="empty">暂无单词</div>';
-  else{h+='<div class="table-wrap"><table><thead><tr><th>单词</th><th>释义</th><th>状态</th><th>操作</th></tr></thead><tbody>';
-    for(var w=0;w<words.length;w++){var wd=words[w];
-      h+='<tr><td><b>'+esc(wd.word)+'</b></td><td>'+esc(wd.meaning)+'</td><td><select class="select" style="width:80px;font-size:11px;padding:3px" data-wid="'+wd.id+'"><option value="new"'+(wd.status==='new'?' selected':'')+'>新词</option><option value="review"'+(wd.status==='review'?' selected':'')+'>复习</option><option value="mastered"'+(wd.status==='mastered'?' selected':'')+'>已掌握</option></select></td><td><button class="btn btn-sm btn-danger del-word" data-id="'+wd.id+'">🗑</button></td></tr>';
-    }
-    h+='</tbody></table></div>';}
-  h+='</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">💬 添加对话</span></div>';
-  h+='<div class="form-group"><label>场景名</label><input class="input" id="newDiaTitle" placeholder="场景名"></div>';
-  h+='<div class="form-group"><label>英文对话</label><textarea id="newDiaEn" placeholder="A: ...\nB: ..."></textarea></div>';
-  h+='<div class="form-group"><label>中文说明</label><input class="input" id="newDiaCn" placeholder="中文说明"></div>';
-  h+='<button class="btn btn-primary" id="addDiaBtn">+ 添加对话</button></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">对话列表</span><span class="tag">'+dialogues.length+' 个</span></div>';
-  if(dialogues.length===0)h+='<div class="empty">暂无对话</div>';
-  else{for(var d=0;d<dialogues.length;d++){var dia=dialogues[d];
-    h+='<div style="padding:10px;border-bottom:1px solid rgba(255,179,198,0.15);display:flex;justify-content:space-between;align-items:flex-start"><div><b>'+esc(dia.title)+'</b><div style="font-size:11px;color:var(--text3);margin-top:2px">'+esc(dia.cn)+'</div><div style="font-size:11px;color:var(--text2);margin-top:4px;white-space:pre-line">'+esc(dia.en)+'</div></div><button class="btn btn-sm btn-danger del-dia" data-id="'+dia.id+'">🗑</button></div>';
-  }}
-  h+='</div>';
-  return h;
-}
-function bind_english(){
-  document.getElementById('addWordBtn').onclick=function(){
-    var w=document.getElementById('newWord').value.trim(),m=document.getElementById('newMeaning').value.trim();
-    if(!w){toast('请输入单词','error');return;}
-    state.english.words.push({id:uid(),word:w,meaning:m,status:'new'});
-    saveLocal();toast('✅ 已添加','success');renderCurrentSection();
-  };
-  document.getElementById('addDiaBtn').onclick=function(){
-    var t=document.getElementById('newDiaTitle').value.trim(),e=document.getElementById('newDiaEn').value.trim(),c=document.getElementById('newDiaCn').value.trim();
-    if(!t||!e){toast('请填写完整','error');return;}
-    state.english.dialogues.push({id:uid(),title:t,en:e,cn:c});
-    saveLocal();toast('✅ 已添加','success');renderCurrentSection();
-  };
-  var delW=document.querySelectorAll('.del-word');
-  for(var i=0;i<delW.length;i++){delW[i].onclick=function(){var id=this.dataset.id;
-    state.english.words=state.english.words.filter(function(w){return w.id!==id;});
-    saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-  var delD=document.querySelectorAll('.del-dia');
-  for(var j=0;j<delD.length;j++){delD[j].onclick=function(){var id=this.dataset.id;
-    state.english.dialogues=state.english.dialogues.filter(function(d){return d.id!==id;});
-    saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-  var statusSelects=document.querySelectorAll('[data-wid]');
-  for(var k=0;k<statusSelects.length;k++){statusSelects[k].onchange=function(){var id=this.dataset.wid,v=this.value;
-    for(var x=0;x<state.english.words.length;x++){if(state.english.words[x].id===id){state.english.words[x].status=v;break;}}
-    saveLocal();
-  };}
+function toast(msg, type = 'info') {
+  const box = document.getElementById('toastBox');
+  const t = document.createElement('div'); t.className = 'toast toast-' + type;
+  t.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span><span>${msg}</span>`;
+  box.appendChild(t); setTimeout(() => t.remove(), 3000);
 }
 
-// ═══════════════════════════════════════
-// SECTION: HITS
-// ═══════════════════════════════════════
-function renderHits(){
-  var hits=state.hits||[];
-  var h='<div class="section-title">🔥 热点管理</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">添加热点</span></div>';
-  h+='<div class="form-row">';
-  h+='<div class="form-group"><label>标题</label><input class="input" id="hitTitle" placeholder="热点标题"></div>';
-  h+='<div class="form-group"><label>热度</label><input class="input" id="hitHeat" placeholder="如 12亿"></div>';
-  h+='<div class="form-group"><label>分类</label><select class="select" id="hitTag"><option>穿搭</option><option>拍摄</option><option>新闻</option><option>AI</option></select></div>';
-  h+='<div class="form-group"><label>链接</label><input class="input" id="hitLink" placeholder="https://..."></div>';
-  h+='<div class="form-group"><label>&nbsp;</label><button class="btn btn-primary" id="addHitBtn">+ 添加</button></div>';
-  h+='</div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">热点列表</span><span class="tag">'+hits.length+' 条</span></div>';
-  if(hits.length===0)h+='<div class="empty">暂无热点</div>';
-  else{h+='<div class="table-wrap"><table><thead><tr><th>#</th><th>标题</th><th>热度</th><th>分类</th><th>操作</th></tr></thead><tbody>';
-    for(var i=0;i<hits.length;i++){var ht=hits[i];
-      h+='<tr><td>'+(i+1)+'</td><td>'+esc(ht.title)+'</td><td>🔥 '+esc(ht.heat)+'</td><td><span class="tag">'+esc(ht.tag)+'</span></td><td><button class="btn btn-sm btn-danger del-hit" data-idx="'+i+'">🗑</button></td></tr>';
-    }
-    h+='</tbody></table></div>';}
-  h+='</div>';
-  return h;
-}
-function bind_hits(){
-  document.getElementById('addHitBtn').onclick=function(){
-    var t=document.getElementById('hitTitle').value.trim(),heat=document.getElementById('hitHeat').value.trim(),tag=document.getElementById('hitTag').value,link=document.getElementById('hitLink').value.trim();
-    if(!t){toast('请输入标题','error');return;}
-    state.hits.push({title:t,heat:heat,tag:tag,link:link});
-    saveLocal();toast('✅ 已添加','success');renderCurrentSection();
-  };
-  var dels=document.querySelectorAll('.del-hit');
-  for(var i=0;i<dels.length;i++){dels[i].onclick=function(){var idx=Number(this.dataset.idx);
-    state.hits.splice(idx,1);saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-}
-
-// ═══════════════════════════════════════
-// SECTION: EXERCISE
-// ═══════════════════════════════════════
-function renderExercise(){
-  var exs=state.exercises||[];
-  var h='<div class="section-title">💪 锻炼管理</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">添加锻炼项目</span></div>';
-  h+='<div class="form-row">';
-  h+='<div class="form-group"><label>标题</label><input class="input" id="exTitle" placeholder="锻炼标题"></div>';
-  h+='<div class="form-group"><label>B站BV号</label><input class="input" id="exBvid" placeholder="BV..."></div>';
-  h+='<div class="form-group"><label>时长</label><input class="input" id="exDur" placeholder="08:17"></div>';
-  h+='<div class="form-group"><label>UP主</label><input class="input" id="exUp" placeholder="UP主名"></div>';
-  h+='<div class="form-group"><label>&nbsp;</label><button class="btn btn-primary" id="addExBtn">+ 添加</button></div>';
-  h+='</div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">锻炼项目</span><span class="tag">'+exs.length+' 个</span></div>';
-  if(exs.length===0)h+='<div class="empty">暂无项目</div>';
-  else{h+='<div class="table-wrap"><table><thead><tr><th>标题</th><th>UP主</th><th>时长</th><th>操作</th></tr></thead><tbody>';
-    for(var i=0;i<exs.length;i++){var v=exs[i];
-      h+='<tr><td>'+esc(v.title)+'</td><td>'+esc(v.up)+'</td><td>'+esc(v.dur)+'</td><td><button class="btn btn-sm btn-danger del-ex" data-idx="'+i+'">🗑</button></td></tr>';
-    }
-    h+='</tbody></table></div>';}
-  h+='</div>';
-  return h;
-}
-function bind_exercise(){
-  document.getElementById('addExBtn').onclick=function(){
-    var t=document.getElementById('exTitle').value.trim(),b=document.getElementById('exBvid').value.trim(),d=document.getElementById('exDur').value.trim(),u=document.getElementById('exUp').value.trim();
-    if(!t){toast('请输入标题','error');return;}
-    state.exercises.push({id:uid(),title:t,bvid:b,dur:d,up:u,done:false});
-    saveLocal();toast('✅ 已添加','success');renderCurrentSection();
-  };
-  var dels=document.querySelectorAll('.del-ex');
-  for(var i=0;i<dels.length;i++){dels[i].onclick=function(){var idx=Number(this.dataset.idx);
-    state.exercises.splice(idx,1);saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-}
-
-// ═══════════════════════════════════════
-// SECTION: WALLET
-// ═══════════════════════════════════════
-function renderWallet(){
-  var txns=(state.wallet&&state.wallet.transactions)?state.wallet.transactions:[];
-  var h='<div class="section-title">💰 记账管理</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">添加记录</span></div>';
-  h+='<div class="form-row">';
-  h+='<div class="form-group"><label>类型</label><select class="select" id="txnType"><option value="expense">💸 支出</option><option value="income">💰 收入</option></select></div>';
-  h+='<div class="form-group"><label>金额</label><input class="input" id="txnAmount" type="number" placeholder="0"></div>';
-  h+='<div class="form-group"><label>分类</label><input class="input" id="txnCategory" placeholder="餐饮/交通/..."></div>';
-  h+='<div class="form-group"><label>方式</label><select class="select" id="txnMethod"><option>微信</option><option>支付宝</option><option>银行卡</option></select></div>';
-  h+='<div class="form-group"><label>备注</label><input class="input" id="txnNote" placeholder="备注"></div>';
-  h+='<div class="form-group"><label>日期</label><input class="input" id="txnDate" type="date" value="'+new Date().toISOString().slice(0,10)+'"></div>';
-  h+='<div class="form-group"><label>&nbsp;</label><button class="btn btn-primary" id="addTxnBtn">+ 记账</button></div>';
-  h+='</div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">交易记录</span><span class="tag">'+txns.length+' 笔</span></div>';
-  if(txns.length===0)h+='<div class="empty">暂无记录</div>';
-  else{h+='<div class="table-wrap"><table><thead><tr><th>日期</th><th>类型</th><th>分类</th><th>金额</th><th>方式</th><th>备注</th><th>操作</th></tr></thead><tbody>';
-    for(var i=txns.length-1;i>=0;i--){var tx=txns[i];
-      h+='<tr><td>'+esc(tx.date)+'</td><td>'+(tx.type==='income'?'<span class="tag tag-green">收入</span>':'<span class="tag">支出</span>')+'</td><td>'+esc(tx.category)+'</td><td style="font-weight:700;color:'+(tx.type==='income'?'var(--mint-dark)':'var(--pink-dark)')+'">'+(tx.type==='income'?'+':'-')+fmtMoney(tx.amount)+'</td><td>'+esc(tx.method)+'</td><td>'+esc(tx.note||'')+'</td><td><button class="btn btn-sm btn-danger del-txn" data-id="'+tx.id+'">🗑</button></td></tr>';
-    }
-    h+='</tbody></table></div>';}
-  h+='</div>';
-  return h;
-}
-function bind_wallet(){
-  document.getElementById('addTxnBtn').onclick=function(){
-    var type=document.getElementById('txnType').value,amount=Number(document.getElementById('txnAmount').value)||0,category=document.getElementById('txnCategory').value.trim(),method=document.getElementById('txnMethod').value,note=document.getElementById('txnNote').value.trim(),date=document.getElementById('txnDate').value;
-    if(!amount||!category){toast('请填写金额和分类','error');return;}
-    if(!state.wallet)state.wallet={transactions:[]};
-    state.wallet.transactions.push({id:uid(),type:type,amount:amount,category:category,method:method,note:note,date:date});
-    saveLocal();toast('✅ 已记账','success');renderCurrentSection();
-  };
-  var dels=document.querySelectorAll('.del-txn');
-  for(var i=0;i<dels.length;i++){dels[i].onclick=function(){var id=this.dataset.id;
-    state.wallet.transactions=state.wallet.transactions.filter(function(t){return t.id!==id;});
-    saveLocal();toast('已删除','success');renderCurrentSection();
-  };}
-}
-
-// ═══════════════════════════════════════
-// SECTION: HABITS
-// ═══════════════════════════════════════
-function renderHabits(){
-  var habits=state.habits||{};
-  var cats=[{key:'water',name:'喝水',icon:'💧'},{key:'exercise',name:'运动',icon:'🏃'},{key:'hair',name:'增发',icon:'💆'},{key:'sleep',name:'早睡',icon:'😴'}];
-  var h='<div class="section-title">🌱 习惯管理</div>';
-  var today=new Date();var todayStr=today.toISOString().slice(0,10);
-  for(var c=0;c<cats.length;c++){var cat=cats[c];var data=habits[cat.key]||{};
-    h+='<div class="card"><div class="card-header"><span class="card-title">'+cat.icon+' '+cat.name+'</span></div>';
-    h+='<div class="form-row"><div class="form-group"><label>今日打卡</label><button class="btn '+(data[todayStr]?'btn-mint':'btn-secondary')+'" data-habit="'+cat.key+'" data-date="'+todayStr+'" id="habit-'+cat.key+'">'+(data[todayStr]?'✅ 已打卡':'打卡')+'</button></div>';
-    h+='<div class="form-group"><label>指定日期打卡</label><input class="input" type="date" id="habitDate-'+cat.key+'" value="'+todayStr+'"></div>';
-    h+='<div class="form-group"><label>&nbsp;</label><button class="btn btn-primary habit-toggle" data-habit="'+cat.key+'">切换打卡</button></div></div>';
-    var count=0;for(var k in data)if(data[k])count++;
-    h+='<div style="font-size:11px;color:var(--text3);margin-top:6px">累计打卡: '+count+' 天</div></div>';
-  }
-  return h;
-}
-function bind_habits(){
-  var btns=document.querySelectorAll('.habit-toggle');
-  for(var i=0;i<btns.length;i++){btns[i].onclick=function(){var key=this.dataset.habit;
-    var dateInput=document.getElementById('habitDate-'+key);var dt=dateInput.value;
-    if(!state.habits)state.habits={};if(!state.habits[key])state.habits[key]={};
-    if(state.habits[key][dt]){delete state.habits[key][dt];toast('已取消打卡','info');}
-    else{state.habits[key][dt]=true;toast('✅ 已打卡','success');}
-    saveLocal();renderCurrentSection();
-  };}
-  var todayBtns=document.querySelectorAll('[data-habit][data-date]');
-  for(var j=0;j<todayBtns.length;j++){todayBtns[j].onclick=function(){var key=this.dataset.habit,dt=this.dataset.date;
-    if(!state.habits)state.habits={};if(!state.habits[key])state.habits[key]={};
-    if(state.habits[key][dt]){delete state.habits[key][dt];toast('已取消打卡','info');}
-    else{state.habits[key][dt]=true;toast('✅ 已打卡','success');}
-    saveLocal();renderCurrentSection();
-  };}
-}
-
-// ═══════════════════════════════════════
-// SECTION: PROFILE
-// ═══════════════════════════════════════
-function renderProfile(){
-  var p=state.profile||{name:'米粒大王'};
-  var h='<div class="section-title">👤 个人资料</div>';
-  h+='<div class="card"><div class="form-group"><label>昵称</label><input class="input" id="profileName" value="'+esc(p.name)+'"></div>';
-  h+='<button class="btn btn-primary" id="saveProfileBtn">💾 保存</button></div>';
-  return h;
-}
-function bind_profile(){
-  document.getElementById('saveProfileBtn').onclick=function(){
-    state.profile.name=document.getElementById('profileName').value.trim()||'米粒大王';
-    saveLocal();toast('✅ 已保存','success');
-  };
-}
-
-// ═══════════════════════════════════════
-// SECTION: DATA
-// ═══════════════════════════════════════
-function renderData(){
-  var h='<div class="section-title">📦 数据管理</div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">导出 / 导入</span></div>';
-  h+='<div style="display:flex;gap:8px;flex-wrap:wrap">';
-  h+='<button class="btn btn-primary" id="exportBtn">📤 导出JSON</button>';
-  h+='<button class="btn btn-secondary" id="importBtn">📥 导入JSON</button>';
-  h+='<input type="file" id="importFile" accept=".json" style="display:none">';
-  h+='</div><div style="font-size:11px;color:var(--text3);margin-top:8px">导出数据可备份到本地，导入可恢复数据</div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">⚠️ 危险操作</span></div>';
-  h+='<button class="btn btn-danger" id="resetBtn">🔄 重置所有数据</button>';
-  h+='<div style="font-size:11px;color:var(--text3);margin-top:8px">重置后数据不可恢复，请先导出备份</div></div>';
-  return h;
-}
-function bind_data(){
-  document.getElementById('exportBtn').onclick=function(){
-    var blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mili_data_'+new Date().toISOString().slice(0,10)+'.json';a.click();
-    toast('✅ 已导出','success');
-  };
-  document.getElementById('importBtn').onclick=function(){document.getElementById('importFile').click();};
-  document.getElementById('importFile').onchange=function(){
-    var f=this.files[0];if(!f)return;var r=new FileReader();
-    r.onload=function(ev){try{var d=JSON.parse(ev.target.result);if(d&&typeof d==='object'){state=d;saveLocal();toast('✅ 已导入','success');renderCurrentSection();}}catch(e){toast('导入失败: 文件格式错误','error');}};
-    r.readAsText(f);
-  };
-  document.getElementById('resetBtn').onclick=function(){
-    if(!confirm('确定要重置所有数据吗？此操作不可撤销！'))return;
-    state=defaultState();saveLocal();toast('已重置','info');renderCurrentSection();
-  };
-}
-
-// ═══════════════════════════════════════
-// SECTION: SETTINGS
-// ═══════════════════════════════════════
-function renderSettings(){
-  var h='<div class="section-title">⚙️ 同步设置</div>';
-  h+='<div class="card settings-card"><div class="card-header"><span class="card-title">🔑 GitHub 配置</span></div>';
-  h+='<div class="form-group"><label>Personal Access Token</label><input class="input" id="cfgToken" type="password" value="'+esc(cfg.token)+'" placeholder="ghp_..."></div>';
-  h+='<div class="form-row"><div class="form-group"><label>用户名</label><input class="input" id="cfgOwner" value="'+esc(cfg.owner)+'"></div>';
-  h+='<div class="form-group"><label>仓库名</label><input class="input" id="cfgRepo" value="'+esc(cfg.repo)+'"></div>';
-  h+='<div class="form-group"><label>数据文件名</label><input class="input" id="cfgPath" value="'+esc(cfg.path)+'"></div></div>';
-  h+='<div style="display:flex;gap:8px;margin-top:12px">';
-  h+='<button class="btn btn-primary" id="saveCfgBtn">💾 保存配置</button>';
-  h+='<button class="btn btn-secondary" id="testCfgBtn">🔍 测试连接</button>';
-  h+='</div></div>';
-  h+='<div class="card"><div class="card-header"><span class="card-title">📖 使用说明</span></div>';
-  h+='<div style="font-size:12px;color:var(--text2);line-height:1.8">';
-  h+='<b>1. 创建 GitHub Token：</b><br>打开 <a href="https://github.com/settings/tokens?type=beta" target="_blank">GitHub Token 设置</a>，生成新 Token，勾选 <code>repo</code> 权限。<br><br>';
-  h+='<b>2. 配置仓库信息：</b><br>填写你的 GitHub 用户名和仓库名，数据将保存为仓库中的 JSON 文件。<br><br>';
-  h+='<b>3. 同步流程：</b><br>• <b>推送</b>：将本地数据上传到 GitHub<br>• <b>拉取</b>：从 GitHub 下载最新数据到本地<br>• 工作台打开时会自动尝试从云端加载数据<br><br>';
-  h+='<b>4. 注意事项：</b><br>• Token 请妥善保管，不要泄露给他人<br>• 推送前建议先拉取最新数据，避免冲突<br>• 数据文件默认为 <code>data.json</code>';
-  h+='</div></div>';
-  return h;
-}
-function bind_settings(){
-  document.getElementById('saveCfgBtn').onclick=function(){
-    cfg.token=document.getElementById('cfgToken').value.trim();
-    cfg.owner=document.getElementById('cfgOwner').value.trim();
-    cfg.repo=document.getElementById('cfgRepo').value.trim();
-    cfg.path=document.getElementById('cfgPath').value.trim()||'data.json';
-    saveConfig();toast('✅ 配置已保存','success');
-    var badge=document.getElementById('syncBadge');
-    badge.className='sync-badge sync-ok';badge.textContent='✅ 已配置';
-  };
-  document.getElementById('testCfgBtn').onclick=async function(){
-    this.textContent='测试中...';this.disabled=true;
-    try{
-      cfg.token=document.getElementById('cfgToken').value.trim();
-      cfg.owner=document.getElementById('cfgOwner').value.trim();
-      cfg.repo=document.getElementById('cfgRepo').value.trim();
-      cfg.path=document.getElementById('cfgPath').value.trim()||'data.json';
-      var result=await githubRead();
-      toast('✅ 连接成功！'+(result.data?'已找到数据文件':'云端暂无数据'),'success');
-    }catch(e){
-      toast('连接失败: '+e.message,'error');
-    }
-    this.textContent='🔍 测试连接';this.disabled=false;
-  };
-}
-
-// ═══════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════
-async function init(){
-  // Load state
-  try{var saved=localStorage.getItem(DATA_KEY);if(saved)state=JSON.parse(saved);}catch(e){}
-  if(!state)state=defaultState();
-
-  // Nav click handlers
-  var items=document.querySelectorAll('.nav-item');
-  for(var i=0;i<items.length;i++){items[i].onclick=function(){switchSection(this.dataset.section);};}
-
-  // Auto sync if token exists
-  if(cfg.token){
-    var badge=document.getElementById('syncBadge');
-    badge.className='sync-badge sync-syncing';badge.textContent='⏳ 同步中...';
-    try{
-      var result=await githubRead();
-      if(result.data){
-        state=result.data;
-        localStorage.setItem(DATA_KEY,JSON.stringify(state));
-        badge.className='sync-badge sync-ok';badge.textContent='✅ 已同步';
-      }
-    }catch(e){
-      badge.className='sync-badge sync-err';badge.textContent='⚠️ 离线模式';
-    }
-  }
-
-  // Render
-  renderCurrentSection();
-}
-
-init();
+// ========== 初始化 ==========
+initNav();
+render('dashboard');
 </script>
 </body>
 </html>
