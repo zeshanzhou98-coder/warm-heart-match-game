@@ -1,0 +1,22 @@
+{
+  "name": "米粒大王的工作台",
+  "short_name": "工作台",
+  "description": "个人自媒体工作台 - 账号管理、任务规划、英语学习、剪辑教程、记账复盘",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff5f7",
+  "theme_color": "#ff85a2",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

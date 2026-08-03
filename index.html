@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#ff85a2">
+<meta name="description" content="米粒大王的个人自媒体工作台 - 账号管理、任务规划、英语学习、剪辑教程、记账复盘">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="工作台">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="assets/icon-192.png">
+<link rel="stylesheet" href="styles.css">
+<title>米粒大王的工作台</title>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="profile">
+    <div class="avatar-wrap" title="点击更换头像" id="avatarWrap">
+      <img src="assets/avatar.jpg" alt="头像" class="avatar" id="sidebarAvatar" onerror="this.style.background='var(--pink-light)';this.style.display='block'">
+    </div>
+    <div class="profile-info">
+      <div class="profile-label">✦ 工作台</div>
+      <div class="profile-name">米粒大王</div>
+    </div>
+    <input type="file" id="avatarFile" accept="image/*" style="display:none">
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div class="sidebar-footer">♡ 米粒大王 ♡</div>
+</aside>
+<main class="main" id="main"></main>
+</div>
+
+<!-- 移动端底部导航 -->
+<nav class="mobile-nav" id="mobileNav"></nav>
+
+<!-- WARDROBE PANEL -->
+<div class="wardrobe-overlay" id="wardrobeOverlay">
+  <div class="wardrobe-panel">
+    <button class="wardrobe-close" id="wardrobeClose">×</button>
+    <div class="wardrobe-title">🎀 小角落生物的衣帽间</div>
+    <div class="wardrobe-preview">
+      <div style="text-align:center">
+        <div id="sumikkoPreview"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px">角落生物</div>
+      </div>
+    </div>
+    <div class="wardrobe-tab" id="wardrobeTabs">
+      <button data-wtab="hat" class="active">🎩 帽子</button>
+      <button data-wtab="top">👔 衣服</button>
+      <button data-wtab="acc">🎀 配饰</button>
+    </div>
+    <div id="wardrobeItems" class="wardrobe-items"></div>
+    <div class="wardrobe-clear"><button class="btn btn-secondary" id="wardrobeClear">🔄 全部脱掉</button></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+// 注册 Service Worker（PWA 离线支持）
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>
