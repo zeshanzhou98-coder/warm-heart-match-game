@@ -397,7 +397,15 @@ function renderDashboard() {
   const pendingTasks = state.tasks.filter(t => !t.completed).length;
   const income = state.wallet.transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
   const expense = state.wallet.transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+  const hasToken = !!githubToken;
   return `
+    ${!hasToken ? `<div class="card" style="background:linear-gradient(135deg,#fff3e0,#fff);border-color:#ffb74d;margin-bottom:16px">
+      <div class="card-header"><span class="card-title">⚠️ 首次使用请配置同步</span></div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">配置 GitHub Token 后，修改数据可以同步到工作台</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="go('sync')">🔧 去配置同步</button>
+      </div>
+    </div>` : ''}
     <div class="stats">
       <div class="stat"><div class="icon">👥</div><div class="value">${fmtNum(totalFans)}</div><div class="label">总粉丝</div></div>
       <div class="stat"><div class="icon">📋</div><div class="value">${pendingTasks}</div><div class="label">待办任务</div></div>
@@ -424,11 +432,18 @@ function renderSync() {
       <p>修改后台数据后，同步到 GitHub 仓库，工作台自动加载最新数据</p>
       <div class="form-group" style="text-align:left"><label class="form-label">GitHub Token</label><input type="password" class="input" id="syncToken" placeholder="ghp_xxxx" value="${esc(githubToken)}"></div>
       <div class="form-group" style="text-align:left"><label class="form-label">仓库地址</label><input type="text" class="input" id="syncRepo" placeholder="username/repo" value="${esc(githubRepo)}"></div>
-      <div class="sync-actions">
+      <div class="sync-actions" style="flex-wrap:wrap">
         <button class="btn btn-primary btn-lg" onclick="saveSyncConfigFromPage()">💾 保存配置</button>
-        <button class="btn btn-success btn-lg" onclick="syncToGithub()">⬆️ 推送到 GitHub</button>
-        <button class="btn btn-secondary btn-lg" onclick="syncFromGithub()">⬇️ 从 GitHub 拉取</button>
+        <button class="btn btn-success btn-lg" onclick="testConnection()">🔍 测试连接</button>
       </div>
+      <div class="sync-status" id="syncStatus"></div>
+      ${githubToken ? `<div style="margin-top:16px;padding-top:16px;border-top:var(--bd)">
+        <p style="font-size:13px;font-weight:600;margin-bottom:10px">同步操作：</p>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button class="btn btn-success btn-lg" onclick="syncToGithub()">⬆️ 推送到 GitHub</button>
+          <button class="btn btn-secondary btn-lg" onclick="syncFromGithub()">⬇️ 从 GitHub 拉取</button>
+        </div>
+      </div>` : ''}
       <div class="sync-status" id="syncStatus"></div>
       <div style="margin-top:16px;font-size:12px;color:var(--text3);text-align:left">
         <p><strong>使用说明：</strong></p>
@@ -444,9 +459,33 @@ function renderSync() {
 function saveSyncConfigFromPage() {
   githubToken = document.getElementById('syncToken').value;
   githubRepo = document.getElementById('syncRepo').value;
+  if (!githubToken) { toast('请输入 GitHub Token', 'error'); return; }
+  if (!githubRepo) { toast('请输入仓库地址', 'error'); return; }
   localStorage.setItem(GITHUB_TOKEN_KEY, githubToken);
   localStorage.setItem(GITHUB_REPO_KEY, githubRepo);
-  toast('配置已保存', 'success');
+  document.getElementById('syncIndicator').innerHTML = '🟢 已配置';
+  toast('配置已保存！现在可以使用同步功能了', 'success');
+  render('sync');
+}
+
+function testConnection() {
+  const token = document.getElementById('syncToken').value;
+  const repo = document.getElementById('syncRepo').value;
+  if (!token || !repo) { toast('请先填写 Token 和仓库地址', 'error'); return; }
+  document.getElementById('syncStatus').innerHTML = '<span style="color:var(--text2)">🔄 测试连接中...</span>';
+  fetch('https://api.github.com/repos/' + repo, { headers: { 'Authorization': '***' + token } })
+    .then(r => {
+      if (r.ok) {
+        document.getElementById('syncStatus').innerHTML = '<span style="color:var(--mint-dark)">✅ 连接成功！仓库可访问</span>';
+        toast('连接成功！', 'success');
+      } else {
+        document.getElementById('syncStatus').innerHTML = '<span style="color:#d14545">❌ 连接失败，请检查 Token 和仓库</span>';
+        toast('连接失败', 'error');
+      }
+    })
+    .catch(() => {
+      document.getElementById('syncStatus').innerHTML = '<span style="color:#d14545">❌ 网络错误</span>';
+    });
 }
 
 function renderAccounts() {
