@@ -1445,9 +1445,92 @@ function bindComm(){
 
 bindCb={home:bindHome,tasks:bindTasks,reading:bindReading,english:bindEnglish,hits:bindHits,exercise:bindExercise,editing:bindEditing,wallet:bindWallet,review:bindReview,tools:bindTools,comm:bindComm};
 
+// ════ CLOUD SYNC ════
+var SYNC_CFG_KEY='mili_admin_config';
+var SYNC_DATA_KEY='mb_v6';
+
+function getSyncConfig(){
+  try{var c=localStorage.getItem(SYNC_CFG_KEY);if(c)return JSON.parse(c);}catch(e){}
+  return null;
+}
+
+function syncApiUrl(owner,repo,path){return 'https://api.github.com/repos/'+owner+'/'+repo+'/'+path;}
+function syncAuthHeaders(token){return {'Accept':'application/vnd.github.v3+json','Authorization':'token '+token};}
+
+async function cloudPull(){
+  var cfg=getSyncConfig();
+  if(!cfg||!cfg.token||!cfg.owner||!cfg.repo){toastSync('请先在管理后台配置同步','error');return false;}
+  try{
+    var url=syncApiUrl(cfg.owner,cfg.repo,'contents/'+(cfg.path||'data.json'));
+    var r=await fetch(url,{headers:syncAuthHeaders(cfg.token)});
+    if(r.status===404){toastSync('云端暂无数据','info');return false;}
+    if(!r.ok)throw new Error(r.status);
+    var j=await r.json();
+    var content=JSON.parse(atob(j.content));
+    state=content;
+    saveState();
+    toastSync('✅ 已从云端同步','success');
+    switchTab(currentTab);
+    return true;
+  }catch(e){toastSync('同步失败: '+e.message,'error');return false;}
+}
+
+async function cloudPush(){
+  var cfg=getSyncConfig();
+  if(!cfg||!cfg.token||!cfg.owner||!cfg.repo){toastSync('请先在管理后台配置同步','error');return;}
+  try{
+    var readUrl=syncApiUrl(cfg.owner,cfg.repo,'contents/'+(cfg.path||'data.json'));
+    var rr=await fetch(readUrl,{headers:syncAuthHeaders(cfg.token)});
+    var sha=null;
+    if(rr.ok){var rj=await rr.json();sha=rj.sha;}
+    var writeUrl=readUrl;
+    var body={message:'app: sync from workspace',content:btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))))};
+    if(sha)body.sha=sha;
+    var wr=await fetch(writeUrl,{method:'PUT',headers:Object.assign({'Content-Type':'application/json'},syncAuthHeaders(cfg.token)),body:JSON.stringify(body)});
+    if(!wr.ok)throw new Error(wr.status);
+    toastSync('✅ 已同步到云端','success');
+  }catch(e){toastSync('同步失败: '+e.message,'error');}
+}
+
+function toastSync(msg,type){
+  var existing=document.getElementById('syncToast');if(existing)existing.remove();
+  var d=document.createElement('div');d.id='syncToast';
+  d.style.cssText='position:fixed;bottom:80px;right:20px;z-index:99999;padding:10px 16px;border-radius:10px;font-size:12px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.15);animation:fadeIn .3s ease;max-width:260px;';
+  if(type==='success')d.style.background='#e8fbf3';d.style.color='#56c596';d.style.border='1.5px solid #a8e6cf';
+  if(type==='error'){d.style.background='#fff0f0';d.style.color='#d14545';d.style.border='1.5px solid #fcc';}
+  if(type==='info'){d.style.background='#ecf5ff';d.style.color='#2b7cd3';d.style.border='1.5px solid #b5d8ff';}
+  d.textContent=msg;document.body.appendChild(d);
+  setTimeout(function(){if(d.parentNode)d.remove();},3000);
+}
+
+function createSyncButton(){
+  var cfg=getSyncConfig();
+  if(!cfg||!cfg.token)return;
+  var old=document.getElementById('cloudSyncBtn');if(old)old.remove();
+  var btn=document.createElement('div');btn.id='cloudSyncBtn';
+  btn.style.cssText='position:fixed;bottom:20px;right:20px;z-index:9999;display:flex;flex-direction:column;align-items:center;gap:6px;';
+  btn.innerHTML='<div id="syncMenu" style="display:none;background:#fff;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.15);padding:8px;min-width:120px"><div style="padding:8px 12px;cursor:pointer;border-radius:8px;font-size:12px;font-weight:600;transition:all .15s" onmouseover="this.style.background=\'#fff0f3\'" onmouseout="this.style.background=\'transparent\'" onclick="cloudPull();document.getElementById(\'syncMenu\').style.display=\'none\'">⬇️ 拉取云端</div><div style="padding:8px 12px;cursor:pointer;border-radius:8px;font-size:12px;font-weight:600;transition:all .15s" onmouseover="this.style.background=\'#fff0f3\'" onmouseout="this.style.background=\'transparent\'" onclick="cloudPush();document.getElementById(\'syncMenu\').style.display=\'none\'">⬆️ 推送到云端</div><a href="admin.html" target="blank" style="display:block;padding:8px 12px;cursor:pointer;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;color:var(--text);transition:all .15s" onmouseover="this.style.background=\'#fff0f3\'" onmouseout="this.style.background=\'transparent\'">⚙️ 管理后台</a></div><div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#ff85a2,#e84d7a);display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 16px rgba(255,133,162,0.4);font-size:20px;transition:all .2s" onclick="var m=document.getElementById(\'syncMenu\');m.style.display=m.style.display===\'none\'?\'block\':\'none\'" onmouseover="this.style.transform=\'scale(1.1)\'" onmouseout="this.style.transform=\'scale(1)\'">☁️</div>';
+  document.body.appendChild(btn);
+}
+
+async function autoCloudSync(){
+  var cfg=getSyncConfig();
+  if(!cfg||!cfg.token)return;
+  try{
+    var url=syncApiUrl(cfg.owner,cfg.repo,'contents/'+(cfg.path||'data.json'));
+    var r=await fetch(url,{headers:syncAuthHeaders(cfg.token)});
+    if(r.ok){var j=await r.json();var content=JSON.parse(atob(j.content));
+      if(content&&typeof content==='object'){state=content;saveState();switchTab(currentTab);}
+    }
+  }catch(e){/* offline, use localStorage */}
+}
+
 // ════ INIT ════
-function init(){
-  updateAvatar();renderNav();applyBg();handleAvatar();initRila();initWardrobe();switchTab('home');
+async function init(){
+  updateAvatar();renderNav();applyBg();handleAvatar();initRila();initWardrobe();
+  createSyncButton();
+  await autoCloudSync();
+  switchTab('home');
 }
 init();
 }();

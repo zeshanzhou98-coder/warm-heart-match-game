@@ -2,6 +2,7 @@ const CACHE_NAME = 'mili-workspace-v2';
 const ASSETS = [
   './',
   './index.html',
+  './admin.html',
   './styles.css',
   './app.js',
   './manifest.json',
